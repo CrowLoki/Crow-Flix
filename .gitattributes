@@ -1,0 +1,51 @@
+* text=auto
+
+.gitattributes text eol=lf
+.gitignore text eol=lf
+*.cjs text eol=lf
+*.css text eol=lf
+*.html text eol=lf
+*.json text eol=lf
+*.lock text eol=lf
+*.md text eol=lf
+*.mjs text eol=lf
+*.ps1 text eol=lf
+*.rs text eol=lf
+*.sha256 text eol=lf
+*.svg text eol=lf
+*.toml text eol=lf
+*.ts text eol=lf
+*.tsx text eol=lf
+*.txt text eol=lf
+*.xml text eol=lf
+*.yaml text eol=lf
+*.yml text eol=lf
+
+# Preserve canonical and generated licence corpora byte-for-byte. Some upstream
+# licence texts intentionally contain trailing spaces, so Git's whitespace
+# checker must not rewrite or reject those legal records.
+LICENSE text eol=lf -whitespace
+THIRD_PARTY_LICENSES.txt -whitespace
+LICENSES/AGPL-3.0-only.txt -whitespace
+LICENSES/Apache-2.0.txt -whitespace
+LICENSES/BSD-3-Clause.txt -whitespace
+LICENSES/MIT.txt -whitespace
+third-party/microsoft-webview2-1.0.3650.58/LICENSE.txt -whitespace
+third-party/microsoft-webview2-1.0.3650.58/NOTICE.txt -whitespace
+third-party/rust-unic/COPYRIGHT.md -whitespace
+third-party/webview2-rs/LICENSE text eol=lf -whitespace
+
+*.7z binary
+*.ani binary
+*.icns binary
+*.ico binary
+*.png binary
+*.cur binary
+*.exe binary
+*.gz binary
+*.woff2 binary
+*.zip binary
+
+.github export-ignore
+.vscode export-ignore
+AGENTS.md export-ignore

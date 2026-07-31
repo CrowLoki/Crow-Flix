@@ -1,0 +1,47 @@
+name: Feature request
+description: Propose a focused improvement to CrowFlix.
+title: "[Feature]: "
+labels:
+  - enhancement
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Explain the user problem first. Do not include credentials, private playlist URLs, personal data, or third-party material that cannot be redistributed.
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem to solve
+      description: What is difficult or impossible today, and who encounters it?
+    validations:
+      required: true
+  - type: textarea
+    id: outcome
+    attributes:
+      label: Desired outcome
+      description: Describe the observable result rather than only an implementation.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed approach
+      description: Include interface, compatibility, privacy, and security effects where relevant.
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+  - type: textarea
+    id: provenance
+    attributes:
+      label: Third-party source and licence
+      description: If the request depends on code, data, images, fonts, playlists, services, or APIs, link to the authoritative source and its redistribution terms.
+  - type: checkboxes
+    id: confirmation
+    attributes:
+      label: Confirmation
+      options:
+        - label: This request does not contain credentials, private URLs, personal data, or unlicensed copied material.
+          required: true
+        - label: I searched existing issues and pull requests for the same request.
+          required: true

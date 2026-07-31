@@ -1,0 +1,57 @@
+{
+  "name": "crowflix",
+  "private": true,
+  "version": "0.5.0",
+  "description": "A cinematic desktop IPTV player, programme guide, and user-managed web library",
+  "author": "CrowLoki",
+  "license": "AGPL-3.0-only",
+  "homepage": "https://github.com/CrowLoki/Crow-Flix#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/CrowLoki/Crow-Flix.git"
+  },
+  "bugs": {
+    "url": "https://github.com/CrowLoki/Crow-Flix/issues"
+  },
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "tauri": "tauri",
+    "tauri:dev": "tauri dev --config src-tauri/tauri.dev.conf.json",
+    "typecheck": "tsc --noEmit",
+    "test:ui": "vitest run",
+    "format:check": "cargo fmt --manifest-path src-tauri/Cargo.toml -- --check",
+    "check:rust": "cargo check --manifest-path src-tauri/Cargo.toml --locked",
+    "test:rust": "cargo test --manifest-path src-tauri/Cargo.toml --locked",
+    "version:check": "node scripts/check-release-version.mjs",
+    "notices": "node scripts/generate-third-party-notices.mjs",
+    "notices:check": "node scripts/generate-third-party-notices.mjs --check",
+    "release:build": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build-windows-release.ps1",
+    "release:verify": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/verify-windows-release.ps1",
+    "check": "npm run version:check && npm run typecheck && npm run test:ui && npm run format:check && npm run check:rust && npm run notices:check"
+  },
+  "dependencies": {
+    "@fontsource/inter": "^5.2.8",
+    "@phosphor-icons/react": "^2.1.10",
+    "@tauri-apps/api": "^2",
+    "@tauri-apps/plugin-http": "2.5.9",
+    "dashjs": "5.2.0",
+    "hls.js": "^1.6.16",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^2",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
+    "@vitejs/plugin-react": "^4.6.0",
+    "typescript": "~5.8.3",
+    "vite": "^7.0.4",
+    "vitest": "^4.1.10"
+  },
+  "allowScripts": {
+    "esbuild@0.28.1": true
+  }
+}

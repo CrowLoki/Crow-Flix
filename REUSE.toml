@@ -1,0 +1,56 @@
+version = 1
+SPDX-PackageName = "CrowFlix"
+SPDX-PackageSupplier = "Person: Crow"
+SPDX-PackageDownloadLocation = "https://github.com/CrowLoki/Crow-Flix"
+
+[[annotations]]
+path = ["**"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2026 Crow"
+SPDX-License-Identifier = "AGPL-3.0-only"
+
+[[annotations]]
+path = ["THIRD_PARTY_LICENSES.txt", "THIRD_PARTY_NOTICES.md"]
+precedence = "override"
+SPDX-FileCopyrightText = "2026 Crow"
+SPDX-License-Identifier = "AGPL-3.0-only"
+SPDX-FileComment = "This annotation covers the generated compilation; embedded third-party notices and licence texts retain their stated terms."
+
+[[annotations]]
+path = ["third-party/rust-unic/COPYRIGHT.md"]
+precedence = "override"
+SPDX-FileCopyrightText = [
+  "2011-2015 The Rust Project developers",
+  "2013-2016 The rust-url developers",
+  "2015-2017 The Servo Project developers",
+  "2017 The UNIC Project developers",
+]
+SPDX-License-Identifier = "Apache-2.0 OR MIT"
+
+[[annotations]]
+path = ["third-party/webview2-rs/LICENSE"]
+precedence = "override"
+SPDX-FileCopyrightText = "2021 Bill Avery"
+SPDX-License-Identifier = "MIT"
+
+[[annotations]]
+path = ["third-party/microsoft-webview2-1.0.3650.58/LICENSE.txt"]
+precedence = "override"
+SPDX-FileCopyrightText = "Microsoft Corporation"
+SPDX-License-Identifier = "BSD-3-Clause"
+
+[[annotations]]
+path = ["third-party/microsoft-webview2-1.0.3650.58/NOTICE.txt"]
+precedence = "override"
+SPDX-FileCopyrightText = [
+  "Microsoft Corporation",
+  "2011 The ANTLR Project",
+]
+SPDX-License-Identifier = "BSD-3-Clause"
+SPDX-FileComment = "Official Microsoft WebView2 SDK redistribution notice; this annotation records the included BSD-3-Clause notices and does not replace the document terms."
+
+[[annotations]]
+path = ["public/assets/brand/**", "src-tauri/icons/**"]
+precedence = "override"
+SPDX-FileCopyrightText = "2026 Crow"
+SPDX-License-Identifier = "LicenseRef-Crow-Brand"

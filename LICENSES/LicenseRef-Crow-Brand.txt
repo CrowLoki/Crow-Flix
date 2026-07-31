@@ -1,0 +1,91 @@
+Crow Brand Asset License
+Version 1.0, 31 July 2026
+
+Copyright (C) 2026 Crow. All rights reserved except for the permissions
+expressly granted below.
+
+1. Covered Assets
+
+“Covered Assets” means the Crow mascot, Crow head, Crow Bitfeather fonts, Crow
+Talon cursors, CrowFlix application icons derived from those works, and any
+other file that expressly identifies this licence with the SPDX identifier
+LicenseRef-Crow-Brand.
+
+“Official CrowFlix Release” means a release published from
+https://github.com/CrowLoki/Crow-Flix by Crow or expressly designated by Crow
+as official.
+
+2. Permission
+
+Subject to this licence, Crow grants you a non-exclusive, worldwide,
+royalty-free permission to:
+
+a. download and use the Covered Assets as displayed within an Official
+   CrowFlix Release;
+
+b. make and redistribute verbatim copies of the Covered Assets only as part of
+   a verbatim copy of the official CrowFlix source repository or an Official
+   CrowFlix Release; and
+
+c. make private modifications to a Covered Asset solely to prepare a proposed
+   contribution to the official CrowFlix repository.
+
+Every permitted copy must retain this licence, BRAND-ASSETS.md, and existing
+copyright and provenance notices.
+
+3. Uses Not Granted
+
+This licence does not permit you to:
+
+a. distribute a Covered Asset by itself, in an asset collection, or as part of
+   a modified or unofficial CrowFlix distribution;
+
+b. publicly distribute a modified, recoloured, redrawn, animated, generated,
+   or otherwise derivative version of a Covered Asset;
+
+c. use a Covered Asset, Crow’s identity, or CrowFlix branding for another
+   application, fork, website, service, account, promotion, merchandise, token,
+   model, dataset, or product;
+
+d. state or imply that Crow created, sponsors, approves, endorses, or is
+   affiliated with an unofficial project or person;
+
+e. impersonate Crow, claim ownership of the Crow identity, register a
+   confusingly similar mark, or remove a rights notice; or
+
+f. sublicense or sell rights in a Covered Asset.
+
+The GNU Affero General Public License that covers CrowFlix software does not
+extend to the Covered Assets. You may distribute a software fork after removing
+or replacing all Covered Assets and other branding that suggests it is an
+Official CrowFlix Release.
+
+4. No Trademark or Personality Rights
+
+No trademark, trade-dress, passing-off, publicity, personality, endorsement, or
+similar right is granted, whether registered or unregistered.
+
+5. Additional Permission
+
+A use not expressly allowed above requires Crow’s explicit permission before
+the use occurs. Permission for one use does not imply permission for another.
+
+6. Termination
+
+Your permissions under this licence terminate automatically if you breach its
+terms. On termination, you must stop the unauthorised use and distribution and
+remove unauthorised public copies under your control. Termination does not
+limit any other remedy available to the copyright owner.
+
+7. Disclaimer
+
+TO THE MAXIMUM EXTENT PERMITTED BY LAW, THE COVERED ASSETS ARE PROVIDED “AS IS”,
+WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT.
+IN NO EVENT WILL THE COPYRIGHT OWNER BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER
+LIABILITY ARISING FROM THE COVERED ASSETS OR THEIR USE.
+
+8. Severability
+
+If a provision of this licence is unenforceable, it is to be limited only as
+much as necessary, and the remaining provisions continue in effect.
