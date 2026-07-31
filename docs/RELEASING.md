@@ -120,6 +120,10 @@ Manually confirm:
   `LICENSES/LicenseRef-Crow-Brand.txt`, `PRIVACY.md`, and dependency notices
   are included where the bundle configuration requires them;
 - no `.pdb`, source map, log, token, key, or credential file is present;
+- CodeQL has completed with the extended query suite and the
+  `remote_and_local` threat model, with no open findings; a dismissal requires
+  evidence in the alert explaining why the reported path is unreachable or
+  non-security-relevant;
 - the installed application launches, loads its catalogue, imports small
   synthetic M3U/XMLTV fixtures, and reports a controlled error for an
   over-limit fixture; and

@@ -1,6 +1,6 @@
 [package]
 name = "crowflix"
-version = "0.5.0"
+version = "0.5.1"
 description = "A cinematic desktop IPTV player and programme guide"
 authors = ["CrowLoki"]
 edition = "2021"

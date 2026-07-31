@@ -6,7 +6,19 @@ $ErrorActionPreference = "Stop"
 
 $rustToolchain = "1.97.0"
 $repositoryRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot ".."))
-$releaseTarget = Join-Path $repositoryRoot "src-tauri\target\public-release"
+$releaseTarget = [IO.Path]::GetFullPath(
+    (Join-Path $repositoryRoot "src-tauri\target\public-release")
+)
+$nsisBundleDirectory = [IO.Path]::GetFullPath(
+    (Join-Path $releaseTarget "release\bundle\nsis")
+)
+$releaseTargetPrefix = $releaseTarget.TrimEnd("\", "/") + [IO.Path]::DirectorySeparatorChar
+if (-not $nsisBundleDirectory.StartsWith(
+        $releaseTargetPrefix,
+        [StringComparison]::OrdinalIgnoreCase
+    )) {
+    throw "Refusing to clean an NSIS bundle directory outside the dedicated release target."
+}
 $protectedRustVariables = @(
     "RUSTFLAGS",
     "CARGO_BUILD_RUSTFLAGS",
@@ -18,6 +30,42 @@ $managedVariables = @(
     "RUSTUP_TOOLCHAIN"
 )
 $savedEnvironment = @{}
+
+function Assert-NoReparsePointsBelow {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$Root,
+        [Parameter(Mandatory = $true)]
+        [string]$Candidate
+    )
+
+    $fullRoot = [IO.Path]::GetFullPath($Root).TrimEnd("\", "/")
+    $fullCandidate = [IO.Path]::GetFullPath($Candidate)
+    $rootPrefix = $fullRoot + [IO.Path]::DirectorySeparatorChar
+    if (-not $fullCandidate.StartsWith(
+            $rootPrefix,
+            [StringComparison]::OrdinalIgnoreCase
+        )) {
+        throw "Refusing to inspect a release path outside the repository."
+    }
+
+    $currentPath = $fullRoot
+    $relativeComponents = $fullCandidate.Substring($rootPrefix.Length).Split(
+        [char[]]@("\", "/"),
+        [StringSplitOptions]::RemoveEmptyEntries
+    )
+    foreach ($component in $relativeComponents) {
+        $currentPath = Join-Path $currentPath $component
+        if (-not (Test-Path -LiteralPath $currentPath)) {
+            return
+        }
+
+        $item = Get-Item -LiteralPath $currentPath -Force
+        if ($item.Attributes -band [IO.FileAttributes]::ReparsePoint) {
+            throw "Refusing to clean a release path containing a reparse point: $currentPath"
+        }
+    }
+}
 
 foreach ($name in $protectedRustVariables) {
     $existingValue = [Environment]::GetEnvironmentVariable($name, "Process")
@@ -120,6 +168,22 @@ try {
             throw "Third-party notice validation failed."
         }
 
+        if (Test-Path -LiteralPath $nsisBundleDirectory) {
+            Assert-NoReparsePointsBelow `
+                -Root $repositoryRoot `
+                -Candidate $nsisBundleDirectory
+            $bundleItem = Get-Item -LiteralPath $nsisBundleDirectory -Force
+            if (-not $bundleItem.PSIsContainer) {
+                throw "Expected the generated NSIS bundle path to be a directory."
+            }
+            if ($bundleItem.Attributes -band [IO.FileAttributes]::ReparsePoint) {
+                throw "Refusing to clean a reparse point at the generated NSIS bundle path."
+            }
+
+            Write-Host "Clearing the generated NSIS bundle output..."
+            Remove-Item -LiteralPath $nsisBundleDirectory -Recurse -Force
+        }
+
         Write-Host "Building the Windows NSIS release with remapped source paths..."
         & $npm.Source run tauri -- build --bundles nsis -- --locked
         if ($LASTEXITCODE -ne 0) {
@@ -131,7 +195,7 @@ try {
     }
 
     $installers = @(
-        Get-ChildItem -LiteralPath (Join-Path $releaseTarget "release\bundle\nsis") `
+        Get-ChildItem -LiteralPath $nsisBundleDirectory `
             -Filter "*.exe" -File -ErrorAction Stop
     )
     if ($installers.Count -ne 1) {

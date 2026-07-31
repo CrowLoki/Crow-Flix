@@ -2,10 +2,12 @@
 
 import { createHash } from "node:crypto";
 import {
-  existsSync,
+  closeSync,
+  fstatSync,
+  openSync,
   readdirSync,
-  readFileSync,
-  statSync,
+  readSync,
+  realpathSync,
   writeFileSync,
 } from "node:fs";
 import { dirname, isAbsolute, join, relative, resolve } from "node:path";
@@ -29,6 +31,8 @@ const overrideManifestPath = join(
   "third-party",
   "license-overrides.json",
 );
+const maxMetadataFileBytes = 8 * 1024 * 1024;
+const maxLicenseFileBytes = 2 * 1024 * 1024;
 
 const npmComponents = collectNpmComponents();
 const cargoComponents = collectCargoComponents();
@@ -75,7 +79,11 @@ if (checkOnly) {
 
 function collectNpmComponents() {
   const lockPath = join(repositoryRoot, "package-lock.json");
-  const lock = readJson(lockPath);
+  const lock = readJson(lockPath, { root: repositoryRoot });
+  const nodeModulesRoot = resolveContainedRealPath(
+    repositoryRoot,
+    join(repositoryRoot, "node_modules"),
+  );
 
   if (lock.lockfileVersion < 2 || typeof lock.packages !== "object") {
     fail("package-lock.json must use the packages-based npm lockfile format.");
@@ -92,14 +100,16 @@ function collectNpmComponents() {
     }
 
     const name = npmNameFromLockPath(packagePath);
-    const installedDirectory = join(
-      repositoryRoot,
-      ...packagePath.split("/"),
+    const installedDirectory = resolveNpmPackageDirectory(
+      nodeModulesRoot,
+      packagePath,
     );
     const installedManifest = join(installedDirectory, "package.json");
-    const manifest = existsSync(installedManifest)
-      ? readJson(installedManifest)
-      : {};
+    const manifest =
+      readJson(installedManifest, {
+        optional: true,
+        root: nodeModulesRoot,
+      }) ?? {};
 
     components.push({
       ecosystem: "npm",
@@ -117,6 +127,34 @@ function collectNpmComponents() {
   }
 
   return deduplicateComponents(components);
+}
+
+function resolveNpmPackageDirectory(nodeModulesRoot, packagePath) {
+  const components = packagePath.split("/");
+  if (
+    components[0] !== "node_modules" ||
+    components.some(
+      (component) =>
+        component === "" ||
+        component === "." ||
+        component === ".." ||
+        component.includes("\\") ||
+        component.includes(":"),
+    )
+  ) {
+    fail(`Unsafe package-lock.json package path: ${packagePath}`);
+  }
+
+  const installedDirectory = resolve(
+    nodeModulesRoot,
+    ...components.slice(1),
+  );
+  assertPathIsInside(
+    nodeModulesRoot,
+    installedDirectory,
+    `package-lock.json package path ${packagePath}`,
+  );
+  return installedDirectory;
 }
 
 function collectCargoComponents() {
@@ -193,34 +231,47 @@ function collectLicenseFiles(
   declaredLicense,
   declaredLicenseFile,
 ) {
-  if (!existsSync(packageDirectory)) {
+  const directory = readDirectoryIfPresent(packageDirectory);
+  if (directory === undefined) {
     return [];
   }
+  const packageRoot = directory.path;
+  const directoryEntries = directory.entries;
 
   const candidates = new Set();
   if (declaredLicenseFile) {
-    candidates.add(resolve(packageDirectory, declaredLicenseFile));
+    const declaredCandidate = resolve(packageRoot, declaredLicenseFile);
+    const packageRelativePath = relative(packageRoot, declaredCandidate);
+    if (
+      packageRelativePath !== "" &&
+      packageRelativePath !== ".." &&
+      !packageRelativePath.startsWith(`..\\`) &&
+      !packageRelativePath.startsWith("../") &&
+      !isAbsolute(packageRelativePath)
+    ) {
+      candidates.add(declaredCandidate);
+    }
   }
 
-  for (const entry of readdirSync(packageDirectory, { withFileTypes: true })) {
+  for (const entry of directoryEntries) {
     if (
       entry.isFile() &&
       /^(licen[cs]e|copying|notice)(?:$|[._-])/i.test(entry.name)
     ) {
-      candidates.add(join(packageDirectory, entry.name));
+      candidates.add(join(packageRoot, entry.name));
     }
   }
 
   const files = [];
   for (const candidate of [...candidates].sort((left, right) =>
-    left.localeCompare(right, "en", { sensitivity: "base" }),
+      left.localeCompare(right, "en", { sensitivity: "base" }),
   )) {
-    if (!existsSync(candidate) || !statSync(candidate).isFile()) {
-      continue;
-    }
-
-    const bytes = readFileSync(candidate);
-    if (bytes.length === 0 || bytes.length > 2 * 1024 * 1024) {
+    const bytes = readBoundedRegularFile(
+      candidate,
+      maxLicenseFileBytes,
+      packageRoot,
+    );
+    if (bytes === undefined || bytes.length === 0) {
       continue;
     }
 
@@ -230,7 +281,7 @@ function collectLicenseFiles(
     }
 
     files.push({
-      name: relative(packageDirectory, candidate).replaceAll("\\", "/"),
+      name: relative(packageRoot, candidate).replaceAll("\\", "/"),
       text,
       sha256: createHash("sha256").update(text, "utf8").digest("hex"),
     });
@@ -243,7 +294,7 @@ function collectLicenseFiles(
 }
 
 function loadLicenseOverrides(path) {
-  const manifest = readJson(path);
+  const manifest = readJson(path, { root: repositoryRoot });
   if (manifest.version !== 1) {
     fail("third-party/license-overrides.json must have version 1.");
   }
@@ -280,11 +331,16 @@ function loadLicenseOverrides(path) {
       ) {
         fail(`Override body ${entry.id} path escapes third-party/.`);
       }
-      if (!existsSync(absolutePath) || !statSync(absolutePath).isFile()) {
+      const bytes = readBoundedRegularFile(
+        absolutePath,
+        maxLicenseFileBytes,
+        manifestDirectory,
+      );
+      if (bytes === undefined) {
         fail(`Override body ${entry.id} is missing: ${entry.path}`);
       }
 
-      const text = normalizeText(readFileSync(absolutePath, "utf8"));
+      const text = normalizeText(bytes.toString("utf8"));
       const actualSha256 = createHash("sha256")
         .update(text, "utf8")
         .digest("hex");
@@ -517,12 +573,17 @@ ${sections.join("\n\n")}
 }
 
 function checkGeneratedFile(path, expected) {
-  if (!existsSync(path)) {
+  const bytes = readBoundedRegularFile(
+    path,
+    maxMetadataFileBytes,
+    repositoryRoot,
+  );
+  if (bytes === undefined) {
     fail(
       `${relative(repositoryRoot, path)} is missing. Run "npm run notices" and commit the result.`,
     );
   }
-  const actual = readFileSync(path, "utf8");
+  const actual = bytes.toString("utf8");
   if (actual !== expected) {
     fail(
       `${relative(repositoryRoot, path)} is stale. Run "npm run notices" and commit the result.`,
@@ -630,12 +691,128 @@ function normalizeText(text) {
   return text.replace(/^\uFEFF/, "").replaceAll("\r\n", "\n").trimEnd() + "\n";
 }
 
-function readJson(path) {
+function readJson(path, { optional = false, root } = {}) {
+  if (typeof root !== "string" || root.length === 0) {
+    fail(`No containment root was supplied for ${relative(repositoryRoot, path)}.`);
+  }
+
+  let bytes;
   try {
-    return JSON.parse(readFileSync(path, "utf8"));
+    bytes = readBoundedRegularFile(path, maxMetadataFileBytes, root);
   } catch (error) {
     fail(`Unable to read ${relative(repositoryRoot, path)}: ${error.message}`);
   }
+  if (bytes === undefined) {
+    if (optional) {
+      return undefined;
+    }
+    fail(`Unable to read ${relative(repositoryRoot, path)}: file is missing.`);
+  }
+
+  try {
+    return JSON.parse(bytes.toString("utf8"));
+  } catch (error) {
+    fail(`Unable to parse ${relative(repositoryRoot, path)}: ${error.message}`);
+  }
+}
+
+function readDirectoryIfPresent(path) {
+  try {
+    const physicalPath = realpathSync.native(path);
+    return {
+      path: physicalPath,
+      entries: readdirSync(physicalPath, { withFileTypes: true }),
+    };
+  } catch (error) {
+    if (isMissingPathError(error)) {
+      return undefined;
+    }
+    throw error;
+  }
+}
+
+function readBoundedRegularFile(path, maxBytes, root) {
+  let physicalPath;
+  try {
+    physicalPath = resolveContainedRealPath(root, path);
+  } catch (error) {
+    if (isMissingPathError(error)) {
+      return undefined;
+    }
+    throw error;
+  }
+
+  let descriptor;
+  try {
+    descriptor = openSync(physicalPath, "r");
+  } catch (error) {
+    if (isMissingPathError(error)) {
+      return undefined;
+    }
+    throw error;
+  }
+
+  try {
+    const metadata = fstatSync(descriptor);
+    if (!metadata.isFile() || metadata.size > maxBytes) {
+      return undefined;
+    }
+
+    const bytes = Buffer.allocUnsafe(maxBytes + 1);
+    let offset = 0;
+    while (offset < bytes.length) {
+      const bytesRead = readSync(
+        descriptor,
+        bytes,
+        offset,
+        bytes.length - offset,
+        null,
+      );
+      if (bytesRead === 0) {
+        break;
+      }
+      offset += bytesRead;
+    }
+
+    if (offset > maxBytes) {
+      return undefined;
+    }
+    return bytes.subarray(0, offset);
+  } finally {
+    closeSync(descriptor);
+  }
+}
+
+function resolveContainedRealPath(root, path) {
+  const lexicalRoot = resolve(root);
+  const lexicalPath = resolve(path);
+  assertPathIsInside(lexicalRoot, lexicalPath, `path ${path}`);
+
+  const physicalRoot = realpathSync.native(lexicalRoot);
+  const physicalPath = realpathSync.native(lexicalPath);
+  assertPathIsInside(physicalRoot, physicalPath, `physical path ${path}`);
+  return physicalPath;
+}
+
+function assertPathIsInside(root, path, label) {
+  const relativePath = relative(root, path);
+  if (
+    relativePath === "" ||
+    relativePath === ".." ||
+    relativePath.startsWith(`..\\`) ||
+    relativePath.startsWith("../") ||
+    isAbsolute(relativePath)
+  ) {
+    fail(`${label} escapes its permitted directory.`);
+  }
+}
+
+function isMissingPathError(error) {
+  return (
+    error !== null &&
+    typeof error === "object" &&
+    ["EISDIR", "ELOOP", "ENOENT", "ENOTDIR"].includes(error.code)
+  );
 }
 
 function requireNonEmptyString(value, label) {

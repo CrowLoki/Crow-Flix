@@ -551,7 +551,7 @@ export default function App() {
       {view === "web"
         ? <footer className="status-bar"><span><GlobeHemisphereWest weight="fill" /> {webDestinations.length.toLocaleString()} website destinations</span><span>Saved on this device · JSON backup available</span></footer>
         : view === "about"
-          ? <footer className="status-bar"><span><Info weight="fill" /> CrowFlix 0.5.0</span><span>Copyright © 2026 Crow · AGPL-3.0-only</span></footer>
+          ? <footer className="status-bar"><span><Info weight="fill" /> CrowFlix 0.5.1</span><span>Copyright © 2026 Crow · AGPL-3.0-only</span></footer>
         : <footer className="status-bar"><span><Broadcast weight="fill" /> {catalog.channels.length.toLocaleString()} channels · {sourceCount.toLocaleString()} sources</span><span>{catalog.source}</span><button onClick={() => void loadCatalog(true)}><ArrowsClockwise /> Refresh catalogue</button></footer>}
       {playing && <Player channel={playing} now={currentProgramme(programmes, playing.id, clock)} next={nextProgramme(programmes, playing.id, clock)} playback={playback} videoRef={videoRef} onOpenWebsite={(url, title) => void openWebsite(url, title)} onClose={() => setPlaying(null)} />}
       {sourceOpen && <SourceDialog sourceUrl={sourceUrl} setSourceUrl={setSourceUrl} epgUrl={epgUrl} setEpgUrl={setEpgUrl} loading={loading || guideLoading} onClose={() => setSourceOpen(false)} onPlaylistUrl={() => void importPlaylistUrl()} onPlaylistFile={(file) => void importPlaylistFile(file)} onEpgUrl={() => void importEpgUrl()} onEpgFile={(file) => void importEpgFile(file)} />}
@@ -681,7 +681,7 @@ function AboutView({ onOpen }: { onOpen: (url: string, title: string) => void })
       <img src={MASCOT_IMAGE} alt="CrowFlix cybernetic crow mascot" />
       <div>
         <span className="overline"><Info weight="fill" /> About CrowFlix</span>
-        <h1>CrowFlix <strong>0.5.0</strong></h1>
+        <h1>CrowFlix <strong>0.5.1</strong></h1>
         <p>A cinematic desktop IPTV player, programme guide, and user-managed web library built with Tauri, Rust, React, and TypeScript.</p>
       </div>
     </div>

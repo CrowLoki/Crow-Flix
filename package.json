@@ -1,7 +1,7 @@
 {
   "name": "crowflix",
   "private": true,
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "A cinematic desktop IPTV player, programme guide, and user-managed web library",
   "author": "CrowLoki",
   "license": "AGPL-3.0-only",

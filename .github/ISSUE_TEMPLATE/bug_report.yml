@@ -13,7 +13,7 @@ body:
     attributes:
       label: CrowFlix version
       description: Use the version shown in the application or installer.
-      placeholder: "0.5.0"
+      placeholder: "0.5.1"
     validations:
       required: true
   - type: input

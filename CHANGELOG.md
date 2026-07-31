@@ -9,6 +9,28 @@ and the project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 No unreleased changes are currently recorded.
 
+## [0.5.1] - 2026-07-31
+
+### Security
+
+- Removed pathname check-then-read races from release-time dependency-licence
+  collection. Files are now opened once, validated and read through the same
+  bounded descriptor, eliminating the CodeQL `js/file-system-race` finding.
+- Rejected malformed dependency paths and enforced lexical and physical
+  containment for package manifests, dependency-declared licence files and
+  checked-in licence overrides.
+
+### Changed
+
+- Kept repeated release builds isolated by clearing only the dedicated,
+  generated NSIS bundle output before each build, so an installer from an older
+  version cannot be mistaken for a current release artifact.
+- Strengthened the release checklist to require a completed CodeQL analysis
+  with no unresolved findings before tagging.
+- Installed playback, catalogue and user-data behaviour is unchanged. This
+  patch hardens release tooling; there is no evidence that the v0.5.0 installer
+  was exploited or contained the affected build-time code path.
+
 ## [0.5.0] - 2026-07-31
 
 ### Added
