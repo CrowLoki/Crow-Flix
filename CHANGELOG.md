@@ -9,6 +9,21 @@ and the project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Added
 
+- CrowFlix relay: a Cloudflare Worker (`relay/`, zero runtime dependencies)
+  that gives the web build server-side programme guides (`/epg` mirrors the
+  desktop auto-EPG pipeline with a streaming, memory-bounded XMLTV parser),
+  header-locked stream playback (`/stream` rewrites HLS playlists so segments
+  follow the relay, with provider User-Agent/Referer honoured), and bounded
+  user-source fetching (`/fetch`, SSRF-guarded, redirects re-validated). The
+  web build now shows the real programme guide and plays header-locked
+  sources through the relay. The relay does not bypass provider geographic or
+  account restrictions.
+- Desktop auto-updater plumbing: `tauri-plugin-updater` with a minisign
+  keypair (private key in the git-ignored `.secrets/`), signed updater
+  artifacts and `latest.json` generation in the release workflow, and the
+  key-custody rules in `docs/RELEASING.md`. Updater signatures are update
+  integrity, not Authenticode identity. In-app update prompts land with the
+  next frontend pass.
 - CrowFlix Web: the application now also runs as a worldwide browser build,
   deployed to Cloudflare Pages. The browser build loads the real IPTV-org
   catalogue through a faithful TypeScript port of the Rust merge pipeline

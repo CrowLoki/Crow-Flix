@@ -1,0 +1,7 @@
+name = "crowflix-relay"
+main = "src/index.ts"
+compatibility_date = "2026-08-16"
+
+# The deployer adds account_id / routes as needed. No runtime npm
+# dependencies: the Worker uses only Web standard APIs (fetch,
+# DecompressionStream, TextDecoder, ReadableStream/TransformStream).

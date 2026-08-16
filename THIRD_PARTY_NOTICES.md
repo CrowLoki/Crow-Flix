@@ -14,7 +14,7 @@ CrowFlix does not bundle or relicense channel, programme-guide, stream, logo, ar
 
 ## Dependency inventory
 
-Inventory: 345 components (29 npm, 316 Cargo).
+Inventory: 354 components (29 npm, 325 Cargo).
 
 | Ecosystem | Package | Version | Declared license | License text | Upstream |
 | --- | --- | --- | --- | --- | --- |
@@ -145,6 +145,7 @@ Inventory: 345 components (29 npm, 316 Cargo).
 | Cargo | markup5ever | 0.38.0 | MIT OR Apache-2.0 | Included | [source](https://github.com/servo/html5ever) |
 | Cargo | memchr | 2.8.3 | Unlicense OR MIT | Included | [source](https://github.com/BurntSushi/memchr) |
 | Cargo | mime | 0.3.17 | MIT OR Apache-2.0 | Included | [source](https://github.com/hyperium/mime) |
+| Cargo | minisign-verify | 0.2.5 | MIT | Included | [source](https://github.com/jedisct1/rust-minisign-verify) |
 | Cargo | miniz_oxide | 0.8.9 | MIT OR Zlib OR Apache-2.0 | Included | [source](https://github.com/Frommi/miniz_oxide/tree/master/miniz_oxide) |
 | Cargo | mio | 1.2.2 | MIT | Included | [source](https://github.com/tokio-rs/mio) |
 | Cargo | muda | 0.19.3 | Apache-2.0 OR MIT | Included | [source](https://github.com/tauri-apps/muda) |
@@ -186,11 +187,13 @@ Inventory: 345 components (29 npm, 316 Cargo).
 | Cargo | regex-automata | 0.4.15 | MIT OR Apache-2.0 | Included | [source](https://github.com/rust-lang/regex) |
 | Cargo | regex-syntax | 0.8.11 | MIT OR Apache-2.0 | Included | [source](https://github.com/rust-lang/regex) |
 | Cargo | reqwest | 0.12.28 | MIT OR Apache-2.0 | Included | [source](https://github.com/seanmonstar/reqwest) |
+| Cargo | reqwest | 0.13.4 | MIT OR Apache-2.0 | Included | [source](https://github.com/seanmonstar/reqwest) |
 | Cargo | ring | 0.17.14 | Apache-2.0 AND ISC | Included | [source](https://github.com/briansmith/ring) |
 | Cargo | rustc_version | 0.4.1 | MIT OR Apache-2.0 | Included | [source](https://github.com/djc/rustc-version-rs) |
 | Cargo | rustc-hash | 2.1.3 | Apache-2.0 OR MIT | Included | [source](https://github.com/rust-lang/rustc-hash) |
 | Cargo | rustls | 0.23.42 | Apache-2.0 OR ISC OR MIT | Included | [source](https://github.com/rustls/rustls) |
 | Cargo | rustls-pki-types | 1.15.0 | MIT OR Apache-2.0 | Included | [source](https://github.com/rustls/pki-types) |
+| Cargo | rustls-platform-verifier | 0.7.0 | MIT OR Apache-2.0 | Included | [source](https://github.com/rustls/rustls-platform-verifier) |
 | Cargo | rustls-webpki | 0.103.13 | ISC | Included | [source](https://github.com/rustls/webpki) |
 | Cargo | ryu | 1.0.23 | Apache-2.0 OR BSL-1.0 | Included | [source](https://github.com/dtolnay/ryu) |
 | Cargo | same-file | 1.0.6 | Unlicense/MIT | Included | [source](https://github.com/BurntSushi/same-file) |
@@ -240,10 +243,12 @@ Inventory: 345 components (29 npm, 316 Cargo).
 | Cargo | tauri-plugin-fs | 2.5.1 | Apache-2.0 OR MIT | Included | [source](https://github.com/tauri-apps/plugins-workspace) |
 | Cargo | tauri-plugin-http | 2.5.9 | Apache-2.0 OR MIT | Included | [source](https://github.com/tauri-apps/plugins-workspace) |
 | Cargo | tauri-plugin-opener | 2.5.4 | Apache-2.0 OR MIT | Included | [source](https://github.com/tauri-apps/plugins-workspace) |
+| Cargo | tauri-plugin-updater | 2.10.1 | Apache-2.0 OR MIT | Included | [source](https://github.com/tauri-apps/plugins-workspace) |
 | Cargo | tauri-runtime | 2.11.3 | Apache-2.0 OR MIT | Included | [source](https://github.com/tauri-apps/tauri) |
 | Cargo | tauri-runtime-wry | 2.11.4 | Apache-2.0 OR MIT | Included | [source](https://github.com/tauri-apps/tauri) |
 | Cargo | tauri-utils | 2.9.3 | Apache-2.0 OR MIT | Included | [source](https://github.com/tauri-apps/tauri) |
 | Cargo | tauri-winres | 0.3.6 | MIT | Included | [source](https://github.com/tauri-apps/winres) |
+| Cargo | tempfile | 3.27.0 | MIT OR Apache-2.0 | Included | [source](https://github.com/Stebalien/tempfile) |
 | Cargo | tendril | 0.5.1 | MIT OR Apache-2.0 | Included | [source](https://github.com/servo/html5ever) |
 | Cargo | thiserror | 1.0.69 | MIT OR Apache-2.0 | Included | [source](https://github.com/dtolnay/thiserror) |
 | Cargo | thiserror | 2.0.18 | MIT OR Apache-2.0 | Included | [source](https://github.com/dtolnay/thiserror) |
@@ -302,6 +307,7 @@ Inventory: 345 components (29 npm, 316 Cargo).
 | Cargo | window-vibrancy | 0.6.0 | Apache-2.0 OR MIT | Included | [source](https://github.com/tauri-apps/tauri-plugin-vibrancy) |
 | Cargo | windows | 0.61.3 | MIT OR Apache-2.0 | Included | [source](https://github.com/microsoft/windows-rs) |
 | Cargo | windows_x86_64_msvc | 0.52.6 | MIT OR Apache-2.0 | Included | [source](https://github.com/microsoft/windows-rs) |
+| Cargo | windows_x86_64_msvc | 0.53.1 | MIT OR Apache-2.0 | Included | [source](https://github.com/microsoft/windows-rs) |
 | Cargo | windows-collections | 0.2.0 | MIT OR Apache-2.0 | Included | [source](https://github.com/microsoft/windows-rs) |
 | Cargo | windows-core | 0.61.2 | MIT OR Apache-2.0 | Included | [source](https://github.com/microsoft/windows-rs) |
 | Cargo | windows-future | 0.2.1 | MIT OR Apache-2.0 | Included | [source](https://github.com/microsoft/windows-rs) |
@@ -316,8 +322,10 @@ Inventory: 345 components (29 npm, 316 Cargo).
 | Cargo | windows-strings | 0.4.2 | MIT OR Apache-2.0 | Included | [source](https://github.com/microsoft/windows-rs) |
 | Cargo | windows-strings | 0.5.1 | MIT OR Apache-2.0 | Included | [source](https://github.com/microsoft/windows-rs) |
 | Cargo | windows-sys | 0.59.0 | MIT OR Apache-2.0 | Included | [source](https://github.com/microsoft/windows-rs) |
+| Cargo | windows-sys | 0.60.2 | MIT OR Apache-2.0 | Included | [source](https://github.com/microsoft/windows-rs) |
 | Cargo | windows-sys | 0.61.2 | MIT OR Apache-2.0 | Included | [source](https://github.com/microsoft/windows-rs) |
 | Cargo | windows-targets | 0.52.6 | MIT OR Apache-2.0 | Included | [source](https://github.com/microsoft/windows-rs) |
+| Cargo | windows-targets | 0.53.5 | MIT OR Apache-2.0 | Included | [source](https://github.com/microsoft/windows-rs) |
 | Cargo | windows-threading | 0.1.0 | MIT OR Apache-2.0 | Included | [source](https://github.com/microsoft/windows-rs) |
 | Cargo | windows-version | 0.1.7 | MIT OR Apache-2.0 | Included | [source](https://github.com/microsoft/windows-rs) |
 | Cargo | winnow | 0.7.15 | MIT | Included | [source](https://github.com/winnow-rs/winnow) |
@@ -333,6 +341,7 @@ Inventory: 345 components (29 npm, 316 Cargo).
 | Cargo | zerotrie | 0.2.4 | Unicode-3.0 | Included | [source](https://github.com/unicode-org/icu4x) |
 | Cargo | zerovec | 0.11.6 | Unicode-3.0 | Included | [source](https://github.com/unicode-org/icu4x) |
 | Cargo | zerovec-derive | 0.11.3 | Unicode-3.0 | Included | [source](https://github.com/unicode-org/icu4x) |
+| Cargo | zip | 4.6.1 | MIT | Included | [source](https://github.com/zip-rs/zip2.git) |
 | Cargo | zmij | 1.0.23 | MIT | Included | [source](https://github.com/dtolnay/zmij) |
 | npm | @fontsource/inter | 5.2.8 | OFL-1.1 | Included | [source](https://github.com/fontsource/font-files.git) |
 | npm | @phosphor-icons/react | 2.1.10 | MIT | Included | phosphor-icons/react |

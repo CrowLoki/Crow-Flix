@@ -92,10 +92,50 @@ jobs:
           working-directory: src-tauri
 
       - name: Build path-remapped NSIS installer
+        env:
+          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
         run: npm run release:build
 
       - name: Inspect installer and generate checksum
         run: npm run release:verify
+
+      - name: Generate updater manifest
+        id: updater
+        shell: pwsh
+        run: |
+          $nsisDirectory = "src-tauri/target/public-release/release/bundle/nsis"
+          $installers = @(
+            Get-ChildItem -LiteralPath $nsisDirectory -Filter *.exe -File |
+              Where-Object { $_.Name -match "(?i)setup" }
+          )
+          if ($installers.Count -ne 1) {
+            throw "Expected exactly one NSIS setup executable, but found $($installers.Count)."
+          }
+
+          $installer = $installers[0]
+          $signaturePath = "$($installer.FullName).sig"
+          if (-not (Test-Path -LiteralPath $signaturePath -PathType Leaf)) {
+            throw "Updater signature was not generated. The release build requires the TAURI_SIGNING_PRIVATE_KEY GitHub secret."
+          }
+
+          $signature = (Get-Content -LiteralPath $signaturePath -Raw).Trim()
+          $releaseVersion = $env:GITHUB_REF_NAME -replace "^v", ""
+          $downloadUrl = "https://github.com/$env:GITHUB_REPOSITORY/releases/download/$env:GITHUB_REF_NAME/$($installer.Name)"
+          $platform = [ordered]@{ signature = $signature; url = $downloadUrl }
+          $manifest = [ordered]@{
+            version = $releaseVersion
+            notes = "CrowFlix $env:GITHUB_REF_NAME. See the GitHub release notes for changes."
+            pub_date = (Get-Date).ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ")
+            platforms = [ordered]@{
+              "windows-x86_64" = $platform
+              "windows-x86_64-nsis" = $platform
+            }
+          }
+          $manifestPath = Join-Path $nsisDirectory "latest.json"
+          $manifest | ConvertTo-Json -Depth 5 | Set-Content -LiteralPath $manifestPath -Encoding utf8
+
+          "manifest=$manifestPath" >> $env:GITHUB_OUTPUT
 
       - name: Collect release assets
         id: assets
@@ -115,6 +155,15 @@ jobs:
             throw "Release checksum was not generated."
           }
 
+          $updaterManifest = Join-Path $installer.DirectoryName "latest.json"
+          if (-not (Test-Path -LiteralPath $updaterManifest -PathType Leaf)) {
+            throw "Updater manifest latest.json was not generated."
+          }
+          $updaterSignature = "$($installer.FullName).sig"
+          if (-not (Test-Path -LiteralPath $updaterSignature -PathType Leaf)) {
+            throw "Updater minisign signature was not generated."
+          }
+
           $legalFiles = @(
             "LICENSE",
             "LICENSING.md",
@@ -132,12 +181,16 @@ jobs:
           New-Item -ItemType Directory -Path release-assets -Force | Out-Null
           Copy-Item -LiteralPath $installer.FullName -Destination release-assets
           Copy-Item -LiteralPath $checksum -Destination release-assets
+          Copy-Item -LiteralPath $updaterManifest -Destination release-assets
+          Copy-Item -LiteralPath $updaterSignature -Destination release-assets
           foreach ($file in $legalFiles) {
             Copy-Item -LiteralPath $file -Destination release-assets
           }
 
           "installer=release-assets/$($installer.Name)" >> $env:GITHUB_OUTPUT
           "checksum=release-assets/$($installer.Name).sha256" >> $env:GITHUB_OUTPUT
+          "updater-manifest=release-assets/latest.json" >> $env:GITHUB_OUTPUT
+          "updater-signature=release-assets/$($installer.Name).sig" >> $env:GITHUB_OUTPUT
 
       - name: Upload workflow artifact
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2

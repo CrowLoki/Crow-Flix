@@ -29,3 +29,6 @@ output/playwright/
 *.njsproj
 *.sln
 *.sw?
+
+# Local secrets (Tauri updater signing key)
+.secrets/
