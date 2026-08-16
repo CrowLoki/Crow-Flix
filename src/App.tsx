@@ -55,6 +55,7 @@ import {
   upsertWebDestination,
   type WebDestination,
 } from "./webDestinations";
+import { appendZapDigit, resolveZapNumber, zapTarget } from "./zap";
 import "./App.css";
 
 const MASCOT_IMAGE = "/assets/brand/crow-mascot.png";
@@ -279,6 +280,11 @@ export default function App() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const guideCache = useRef(new Map<string, GuideResult>());
   const skipInitialWebSave = useRef(true);
+  const previousChannelKey = useRef<string | null>(null);
+  const zapBuffer = useRef("");
+  const zapNumberTimer = useRef<number | undefined>(undefined);
+  const zapNoticeTimer = useRef<number | undefined>(undefined);
+  const [zapNotice, setZapNotice] = useState("");
   const playbackTarget = useMemo(
     () => playing ? { ...playing, sources: channelSources(playing) } : null,
     [playing],
@@ -389,7 +395,12 @@ export default function App() {
   }, [catalog.channels.length, guideCountry, loadGuide]);
 
   const play = useCallback((channel: Channel) => {
-    setPlaying(channel);
+    setPlaying((current) => {
+      if (current && current.key !== channel.key) {
+        previousChannelKey.current = current.key;
+      }
+      return channel;
+    });
     setRecent((items) => [channel.key, ...items.filter((key) => key !== channel.key)].slice(0, 24));
   }, []);
 
@@ -533,6 +544,72 @@ export default function App() {
   const heroNow = hero ? currentProgramme(programmes, hero.id, clock) : undefined;
   const heroNext = hero ? nextProgramme(programmes, hero.id, clock) : undefined;
 
+  const zapKeys = useMemo(
+    () => (filteredChannels.length ? filteredChannels : catalog.channels).map((channel) => channel.key),
+    [filteredChannels, catalog.channels],
+  );
+  const announceZap = useCallback((message: string) => {
+    setZapNotice(message);
+    window.clearTimeout(zapNoticeTimer.current);
+    zapNoticeTimer.current = window.setTimeout(() => setZapNotice(""), 1800);
+  }, []);
+  const zapTo = useCallback((channel: Channel, label?: string) => {
+    play(channel);
+    announceZap(label || channel.name);
+  }, [play, announceZap]);
+  const zapStep = useCallback((direction: 1 | -1) => {
+    const targetKey = zapTarget(zapKeys, playing?.key ?? null, direction);
+    const channel = targetKey ? catalog.channels.find((item) => item.key === targetKey) : undefined;
+    if (!channel || !targetKey) return;
+    zapTo(channel, `CH ${zapKeys.indexOf(targetKey) + 1} · ${channel.name}`);
+  }, [zapKeys, playing?.key, catalog.channels, zapTo]);
+  const commitZapNumber = useCallback(() => {
+    const buffer = zapBuffer.current;
+    zapBuffer.current = "";
+    if (!buffer) return;
+    const index = resolveZapNumber(buffer, zapKeys.length);
+    if (index === null) { announceZap(`No channel ${buffer}`); return; }
+    const channel = catalog.channels.find((item) => item.key === zapKeys[index]);
+    if (channel) zapTo(channel, `CH ${index + 1} · ${channel.name}`);
+  }, [zapKeys, catalog.channels, zapTo, announceZap]);
+
+  useEffect(() => {
+    if (!playing) return undefined;
+    const onKeyDown = (event: KeyboardEvent) => {
+      const target = event.target as HTMLElement | null;
+      if (target && (["INPUT", "TEXTAREA", "SELECT"].includes(target.tagName) || target.isContentEditable)) return;
+      if (/^[0-9]$/.test(event.key)) {
+        event.preventDefault();
+        zapBuffer.current = appendZapDigit(zapBuffer.current, event.key);
+        announceZap(`CH ${zapBuffer.current}…`);
+        window.clearTimeout(zapNumberTimer.current);
+        zapNumberTimer.current = window.setTimeout(commitZapNumber, 1100);
+        return;
+      }
+      if (event.key === "Enter" && zapBuffer.current) {
+        event.preventDefault();
+        window.clearTimeout(zapNumberTimer.current);
+        commitZapNumber();
+        return;
+      }
+      if (event.key === "ArrowUp" || event.key === "PageUp") { event.preventDefault(); zapStep(1); return; }
+      if (event.key === "ArrowDown" || event.key === "PageDown") { event.preventDefault(); zapStep(-1); return; }
+      if ((event.key === "Backspace" || event.key.toLowerCase() === "l") && previousChannelKey.current) {
+        event.preventDefault();
+        const channel = catalog.channels.find((item) => item.key === previousChannelKey.current);
+        if (channel) zapTo(channel, `BACK · ${channel.name}`);
+        return;
+      }
+      if (event.key === "Escape") { event.preventDefault(); setPlaying(null); }
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => {
+      window.removeEventListener("keydown", onKeyDown);
+      zapBuffer.current = "";
+      window.clearTimeout(zapNumberTimer.current);
+    };
+  }, [playing, zapStep, commitZapNumber, zapTo, announceZap, catalog.channels]);
+
   const changeView = (next: View) => { setView(next); window.scrollTo({ top: 0, behavior: "smooth" }); };
 
   return (
@@ -553,7 +630,7 @@ export default function App() {
         : view === "about"
           ? <footer className="status-bar"><span><Info weight="fill" /> CrowFlix 0.5.1</span><span>Copyright © 2026 Crow · AGPL-3.0-only</span></footer>
         : <footer className="status-bar"><span><Broadcast weight="fill" /> {catalog.channels.length.toLocaleString()} channels · {sourceCount.toLocaleString()} sources</span><span>{catalog.source}</span><button onClick={() => void loadCatalog(true)}><ArrowsClockwise /> Refresh catalogue</button></footer>}
-      {playing && <Player channel={playing} now={currentProgramme(programmes, playing.id, clock)} next={nextProgramme(programmes, playing.id, clock)} playback={playback} videoRef={videoRef} onOpenWebsite={(url, title) => void openWebsite(url, title)} onClose={() => setPlaying(null)} />}
+      {playing && <Player channel={playing} now={currentProgramme(programmes, playing.id, clock)} next={nextProgramme(programmes, playing.id, clock)} playback={playback} videoRef={videoRef} zapNotice={zapNotice} onOpenWebsite={(url, title) => void openWebsite(url, title)} onClose={() => setPlaying(null)} />}
       {sourceOpen && <SourceDialog sourceUrl={sourceUrl} setSourceUrl={setSourceUrl} epgUrl={epgUrl} setEpgUrl={setEpgUrl} loading={loading || guideLoading} onClose={() => setSourceOpen(false)} onPlaylistUrl={() => void importPlaylistUrl()} onPlaylistFile={(file) => void importPlaylistFile(file)} onEpgUrl={() => void importEpgUrl()} onEpgFile={(file) => void importEpgFile(file)} />}
       {toast && <div className="toast"><CheckCircle weight="fill" />{toast}</div>}
     </div>
@@ -709,6 +786,7 @@ function Player({
   next,
   playback,
   videoRef,
+  zapNotice,
   onOpenWebsite,
   onClose,
 }: {
@@ -717,6 +795,7 @@ function Player({
   next?: Programme;
   playback: PlaybackController;
   videoRef: React.RefObject<HTMLVideoElement | null>;
+  zapNotice: string;
   onOpenWebsite: (url: string, title: string) => void;
   onClose: () => void;
 }) {
@@ -744,6 +823,8 @@ function Player({
       {playback.canNext && <button className="player-next-source" onClick={playback.next} title="Try the next available source">Next source <CaretRight /></button>}
       <div className="player-brand"><img src={BRAND_ICON} alt="" />CROW<strong>FLIX</strong></div>
     </div>
+    {zapNotice && <div className="zap-osd" role="status">{zapNotice}</div>}
+    <div className="player-keys" aria-hidden="true">↑↓ Channel · 0-9 Direct · L Last · Esc Close</div>
     <div className="player-info">
       <span className="overline"><Broadcast weight="fill" /> Live · {countryName(channel.country)}</span>
       <h1>{now?.title || channel.name}</h1>
