@@ -9,6 +9,15 @@ and the project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Added
 
+- CrowFlix Web: the application now also runs as a worldwide browser build,
+  deployed to Cloudflare Pages. The browser build loads the real IPTV-org
+  catalogue through a faithful TypeScript port of the Rust merge pipeline
+  (`src/webCatalog.ts`, covered by its own test suite) with a 12-hour
+  Cache-API read-through and stale-cache fallback. HLS/DASH playback,
+  browsing, search, favourites, recents, zapping, and the Web Library all run
+  in the browser; external destinations open in a new tab. Programme guides
+  and header-locked streams await the CrowFlix relay (a Cloudflare Worker) —
+  the web UI says so honestly instead of faking listings.
 - Zap: hardware-style channel navigation in the player. Channel up/down with
   `ArrowUp`/`ArrowDown` or `PageUp`/`PageDown` surfs the current browse
   context, `Backspace` or `L` returns to the previous channel, and typing a

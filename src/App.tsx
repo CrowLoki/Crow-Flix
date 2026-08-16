@@ -56,6 +56,7 @@ import {
   type WebDestination,
 } from "./webDestinations";
 import { appendZapDigit, resolveZapNumber, zapTarget } from "./zap";
+import { loadWebCatalog } from "./webCatalog";
 import "./App.css";
 
 const MASCOT_IMAGE = "/assets/brand/crow-mascot.png";
@@ -245,11 +246,9 @@ export default function App() {
     loadWebDestinations(localStorage)
   );
   const [view, setView] = useState<View>("home");
-  const [catalog, setCatalog] = useState<Catalog>(
-    () => isDesktop ? emptyCatalog : demoCatalog,
-  );
+  const [catalog, setCatalog] = useState<Catalog>(emptyCatalog);
   const [catalogError, setCatalogError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(isDesktop);
+  const [loading, setLoading] = useState(true);
   const [loadingMessage, setLoadingMessage] = useState("Connecting to IPTV-org…");
   const [query, setQuery] = useState("");
   const [browseMode, setBrowseMode] = useState<BrowseMode>("categories");
@@ -258,9 +257,7 @@ export default function App() {
   const [language, setLanguage] = useState("all");
   const [region, setRegion] = useState("all");
   const [guideCountry, setGuideCountry] = useState(preferredCountry());
-  const [programmes, setProgrammes] = useState<Programme[]>(
-    () => isDesktop ? [] : makeDemoProgrammes(demoChannels),
-  );
+  const [programmes, setProgrammes] = useState<Programme[]>([]);
   const [guideStatus, setGuideStatus] = useState("Preparing the live guide…");
   const [guideLoading, setGuideLoading] = useState(false);
   const [playing, setPlaying] = useState<Channel | null>(null);
@@ -297,11 +294,12 @@ export default function App() {
   }, []);
 
   const loadCatalog = useCallback(async (force = false) => {
-    if (!isDesktop) return;
     setLoading(true);
     setLoadingMessage(force ? "Refreshing the worldwide catalogue…" : "Loading channels, feeds, logos and regions…");
     try {
-      const result = await invoke<Catalog>("load_catalog", { force });
+      const result = isDesktop
+        ? await invoke<Catalog>("load_catalog", { force })
+        : await loadWebCatalog(force);
       setCatalog(result);
       setCatalogError(null);
       setGuideCountry((current) => {
@@ -315,6 +313,16 @@ export default function App() {
       });
       if (force) showToast(`${result.channels.length.toLocaleString()} channels ready · ${result.source}`);
     } catch (error) {
+      if (!isDesktop) {
+        // The web build has no demo pretence: show the labelled preview set
+        // only when the real catalogue cannot be reached at all.
+        setCatalog(demoCatalog);
+        setProgrammes(makeDemoProgrammes(demoChannels));
+        setGuideStatus("CrowFlix preview guide · live now and up next");
+        setCatalogError(null);
+        showToast("Live catalogue unreachable — showing the CrowFlix preview set");
+        return;
+      }
       const message = errorMessage(error);
       setCatalogError(message);
       showToast(message);
@@ -371,8 +379,13 @@ export default function App() {
       return;
     }
     if (!isDesktop) {
-      const result: GuideResult = { programmes: makeDemoProgrammes(countryChannels), source: "CrowFlix preview guide", matchedChannels: countryChannels.length, updatedAt: new Date().toISOString() };
-      guideCache.current.set(targetCountry, result); setProgrammes(result.programmes); setGuideStatus(`${result.source} · live now and up next`); return;
+      if (catalog.source.includes("preview")) {
+        const result: GuideResult = { programmes: makeDemoProgrammes(countryChannels), source: "CrowFlix preview guide", matchedChannels: countryChannels.length, updatedAt: new Date().toISOString() };
+        guideCache.current.set(targetCountry, result); setProgrammes(result.programmes); setGuideStatus(`${result.source} · live now and up next`); return;
+      }
+      setProgrammes([]);
+      setGuideStatus("The programme guide reaches the web version with the CrowFlix relay — it is live in the desktop app today");
+      return;
     }
     setGuideLoading(true);
     setGuideStatus(`Matching ${countryName(targetCountry)} channels to IPTV-org programme sources…`);
@@ -385,7 +398,7 @@ export default function App() {
       setProgrammes([]);
       setGuideStatus(error instanceof Error ? error.message : String(error));
     } finally { setGuideLoading(false); }
-  }, [catalog.channels, catalog.regions, isDesktop]);
+  }, [catalog.channels, catalog.regions, catalog.source, isDesktop]);
 
   useEffect(() => { if (catalog.channels.length) void loadGuide(guideCountry); }, [catalog.channels, guideCountry, loadGuide]);
   useEffect(() => {
@@ -408,11 +421,11 @@ export default function App() {
     setFavourites((items) => items.includes(channel.key) ? items.filter((key) => key !== channel.key) : [...items, channel.key]);
   }, []);
 
-  const openWebsite = useCallback(async (url: string, title = "website") => {
+  const openWebsite = useCallback(async (url: string, _title = "website") => {
     try {
       const normalized = normalizeExternalHttpUrl(url);
       if (!window.__TAURI_INTERNALS__) {
-        showToast(`${title} will open in the desktop app`);
+        window.open(normalized, "_blank", "noopener,noreferrer");
         return;
       }
       await invoke("open_web_destination", { url: normalized });
@@ -614,7 +627,7 @@ export default function App() {
 
   return (
     <div className="app-shell">
-      <Header view={view} onView={changeView} query={query} onQuery={(value) => { setQuery(value); if (value && view !== "web") setView("live"); }} onSource={() => setSourceOpen(true)} />
+      <Header view={view} onView={changeView} query={query} onQuery={(value) => { setQuery(value); if (value && view !== "web") setView("live"); }} onSource={() => setSourceOpen(true)} canAddSource={isDesktop} />
       {loading && <LoadingOverlay message={loadingMessage} />}
       {catalogError && <CatalogErrorBanner message={catalogError} hasCatalog={catalog.channels.length > 0} loading={loading} onRetry={() => void loadCatalog(catalog.channels.length > 0)} />}
       <main>
@@ -637,12 +650,12 @@ export default function App() {
   );
 }
 
-function Header({ view, onView, query, onQuery, onSource }: { view: View; onView: (view: View) => void; query: string; onQuery: (value: string) => void; onSource: () => void }) {
+function Header({ view, onView, query, onQuery, onSource, canAddSource }: { view: View; onView: (view: View) => void; query: string; onQuery: (value: string) => void; onSource: () => void; canAddSource: boolean }) {
   const nav: Array<[View, string, React.ReactNode]> = [["home", "Home", <House />], ["live", "Live TV", <Broadcast />], ["guide", "Guide", <CalendarDots />], ["web", "Web Library", <GlobeHemisphereWest />], ["favourites", "My List", <Heart />], ["about", "About", <Info />]];
   return <header className="topbar">
     <button className="brand" onClick={() => onView("home")}><img src={BRAND_ICON} alt="" /><span>CROW<strong>FLIX</strong></span></button>
     <nav>{nav.map(([id, label, icon]) => <button key={id} className={view === id ? "active" : ""} onClick={() => onView(id)}>{icon}<span>{label}</span></button>)}</nav>
-    <div className="header-actions"><label className="search"><MagnifyingGlass /><input value={query} onChange={(event) => onQuery(event.target.value)} placeholder={view === "web" ? "Search websites" : "Search the world"} />{query && <button aria-label="Clear search" onClick={() => onQuery("")}><X /></button>}</label><button className="source-button" onClick={onSource}><Plus /><span>Add source</span></button></div>
+    <div className="header-actions"><label className="search"><MagnifyingGlass /><input value={query} onChange={(event) => onQuery(event.target.value)} placeholder={view === "web" ? "Search websites" : "Search the world"} />{query && <button aria-label="Clear search" onClick={() => onQuery("")}><X /></button>}</label>{canAddSource && <button className="source-button" onClick={onSource}><Plus /><span>Add source</span></button>}</div>
   </header>;
 }
 
