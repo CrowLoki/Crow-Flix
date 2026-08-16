@@ -315,6 +315,8 @@ main { min-height: calc(100vh - 122px); }
 .player-source-state i { width: 7px; height: 7px; border-radius: 50%; background: var(--warning); box-shadow: 0 0 10px currentColor; }
 .player-source-state i.online { background: var(--success); }
 .player-top > .player-next-source { margin-right: 20px; border: 1px solid var(--line-strong); background: rgba(7, 16, 27, .78); font-size: 11px; text-transform: uppercase; letter-spacing: .05em; }
+.zap-osd { position: absolute; z-index: 5; top: 96px; right: 36px; padding: 12px 18px; border: 1px solid var(--line-strong); border-radius: 12px; color: var(--cyan); background: rgba(4, 10, 19, .92); box-shadow: 0 0 28px rgba(51, 214, 255, .18), inset 0 1px rgba(255, 255, 255, .04); font: 700 15px var(--font-mono); letter-spacing: .08em; text-transform: uppercase; backdrop-filter: blur(14px); }
+.player-keys { position: absolute; z-index: 2; right: 36px; bottom: 26px; padding: 8px 13px; border: 1px solid var(--line); border-radius: 999px; color: var(--dim); background: rgba(7, 16, 27, .72); font: 400 10px var(--font-mono); letter-spacing: .08em; text-transform: uppercase; }
 .player-status { position: absolute; z-index: 4; top: 50%; left: 50%; display: flex; min-width: 320px; align-items: center; flex-direction: column; gap: 10px; padding: 25px 30px; border: 1px solid var(--line-strong); border-radius: 14px; color: #f4f8ff; background: rgba(4, 10, 19, .92); transform: translate(-50%, -50%); backdrop-filter: blur(15px); }
 .player-status svg { color: var(--violet-bright); font-size: 34px; }
 .player-status strong { font: 700 20px var(--font-display); letter-spacing: .03em; }

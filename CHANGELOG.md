@@ -7,7 +7,14 @@ and the project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
-No unreleased changes are currently recorded.
+### Added
+
+- Zap: hardware-style channel navigation in the player. Channel up/down with
+  `ArrowUp`/`ArrowDown` or `PageUp`/`PageDown` surfs the current browse
+  context, `Backspace` or `L` returns to the previous channel, and typing a
+  channel number with `Enter` jumps directly to it, with an on-screen zap
+  display. `Escape` closes the player.
+- The staged product roadmap in `docs/ROADMAP.md`.
 
 ## [0.5.1] - 2026-07-31
 
