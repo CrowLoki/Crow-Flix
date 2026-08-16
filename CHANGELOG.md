@@ -14,6 +14,13 @@ and the project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   context, `Backspace` or `L` returns to the previous channel, and typing a
   channel number with `Enter` jumps directly to it, with an on-screen zap
   display. `Escape` closes the player.
+- Cinematic pass, first wave: the player chrome (top bar, now-playing panel,
+  key hints, zap display) now auto-hides after a short idle period and returns
+  on any mouse or key activity, staying visible whenever playback needs
+  attention. An ambient violet/blue/cyan bloom fills the letterbox area behind
+  the video. Live badges, guide now-cells, and the guide signal dot pulse;
+  the hero gains a scanline layer and a slow radar sweep; the zap display and
+  toasts animate in. All motion respects `prefers-reduced-motion`.
 - The staged product roadmap in `docs/ROADMAP.md`.
 
 ## [0.5.1] - 2026-07-31

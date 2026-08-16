@@ -802,6 +802,32 @@ function Player({
   const source = playback.source;
   const latestDiagnostic = playback.diagnostics[playback.diagnostics.length - 1];
   const busy = playback.status === "loading" || playback.status === "switching";
+  const [chromeVisible, setChromeVisible] = useState(true);
+  const chromeTimer = useRef<number | undefined>(undefined);
+  const interactive = busy || playback.status === "failed" || playback.status === "interaction-required";
+  const wake = useCallback(() => {
+    setChromeVisible(true);
+    window.clearTimeout(chromeTimer.current);
+    chromeTimer.current = window.setTimeout(() => setChromeVisible(false), 3200);
+  }, []);
+  useEffect(() => {
+    wake();
+    window.addEventListener("mousemove", wake);
+    window.addEventListener("keydown", wake);
+    return () => {
+      window.removeEventListener("mousemove", wake);
+      window.removeEventListener("keydown", wake);
+      window.clearTimeout(chromeTimer.current);
+    };
+  }, [wake]);
+  useEffect(() => {
+    if (interactive || zapNotice) {
+      setChromeVisible(true);
+      window.clearTimeout(chromeTimer.current);
+    } else {
+      wake();
+    }
+  }, [interactive, zapNotice, wake]);
   let channelWebsite = "";
   try {
     channelWebsite = channel.website
@@ -810,7 +836,8 @@ function Player({
   } catch {
     channelWebsite = "";
   }
-  return <div className="player">
+  return <div className={chromeVisible ? "player" : "player chrome-hidden"}>
+    <div className="player-ambient" />
     <video ref={videoRef} controls autoPlay playsInline poster={MASCOT_IMAGE} />
     <div className="player-shade" />
     <div className="player-top">

@@ -32,10 +32,12 @@ number entry with an on-screen display.
 The brand is deeper than the current UI. Close that gap.
 
 - Reference-driven visual direction (search first, no default-AI look)
-- Home becomes a true discovery surface: live-now rails ranked by real EPG data
-- Player gets a cinematic chrome: auto-hiding controls, ambient backdrop from
-  channel palette, motion that means something
-- Guide becomes a full channel × time grid with proper now-line and cell states
+- [x] First wave landed 2026-08-16: auto-hiding cinematic player chrome with
+      idle detection, ambient letterbox bloom, live-signal pulses, hero
+      scanlines + radar sweep, OSD/toast entrances
+- [ ] Home becomes a true discovery surface: live-now rails ranked by real EPG data
+- [ ] Player deep pass: backdrop tinted from the channel's own palette
+- [ ] Guide becomes a full channel × time grid with proper now-line and cell states
 - Acceptance: visual review sign-off by Crow; reduced-motion variant verified
 
 ## Stage 3 — Auto-updater
