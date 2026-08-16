@@ -57,6 +57,7 @@ import {
 } from "./webDestinations";
 import { appendZapDigit, resolveZapNumber, zapTarget } from "./zap";
 import { loadWebCatalog } from "./webCatalog";
+import { loadRelayGuide, toWebPlayableSource } from "./relayClient";
 import "./App.css";
 
 const MASCOT_IMAGE = "/assets/brand/crow-mascot.png";
@@ -283,8 +284,15 @@ export default function App() {
   const zapNoticeTimer = useRef<number | undefined>(undefined);
   const [zapNotice, setZapNotice] = useState("");
   const playbackTarget = useMemo(
-    () => playing ? { ...playing, sources: channelSources(playing) } : null,
-    [playing],
+    () => playing
+      ? {
+        ...playing,
+        sources: channelSources(playing).map(
+          (source) => isDesktop ? source : toWebPlayableSource(source),
+        ),
+      }
+      : null,
+    [playing, isDesktop],
   );
   const playback = usePlaybackController(playbackTarget, videoRef);
 
@@ -383,8 +391,17 @@ export default function App() {
         const result: GuideResult = { programmes: makeDemoProgrammes(countryChannels), source: "CrowFlix preview guide", matchedChannels: countryChannels.length, updatedAt: new Date().toISOString() };
         guideCache.current.set(targetCountry, result); setProgrammes(result.programmes); setGuideStatus(`${result.source} · live now and up next`); return;
       }
-      setProgrammes([]);
-      setGuideStatus("The programme guide reaches the web version with the CrowFlix relay — it is live in the desktop app today");
+      setGuideLoading(true);
+      setGuideStatus(`Matching ${countryName(targetCountry)} channels through the CrowFlix relay…`);
+      try {
+        const result = await loadRelayGuide(targetCountry, uniqueChannelIds(countryChannels));
+        guideCache.current.set(targetCountry, result);
+        setProgrammes(result.programmes);
+        setGuideStatus(`${result.source} · ${result.matchedChannels.toLocaleString()} channels matched`);
+      } catch (error) {
+        setProgrammes([]);
+        setGuideStatus(error instanceof Error ? error.message : String(error));
+      } finally { setGuideLoading(false); }
       return;
     }
     setGuideLoading(true);

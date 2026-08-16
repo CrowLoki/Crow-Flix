@@ -171,3 +171,87 @@ Keep the previous known-good release available until these checks pass. If a
 security or packaging fault is found, remove the affected download, explain the
 impact, correct the source, and publish a new version; never silently replace
 bytes under an existing version.
+
+## 9. Auto-updates
+
+CrowFlix ships the Tauri updater plugin. Installed copies check
+`https://github.com/CrowLoki/Crow-Flix/releases/latest/download/latest.json`
+for a newer release, download the NSIS installer listed there, verify its
+minisign signature against the public key baked into
+`src-tauri/tauri.conf.json` (`plugins.updater.pubkey`), and only then run it.
+
+Updater signatures prove update integrity between CrowFlix releases; they are
+not Authenticode publisher identity and do not remove SmartScreen warnings.
+
+### Key custody
+
+The updater keypair was generated with the Tauri CLI:
+
+```powershell
+npx @tauri-apps/cli signer generate -w .secrets/tauri-updater.key
+```
+
+- The private key lives only at `.secrets/tauri-updater.key` (ignored by git
+  via the `.secrets/` entry in `.gitignore`) and as a GitHub Actions secret.
+  NEVER commit it, copy it into the repository outside `.secrets/`, or paste
+  it into a command line recorded by CI logs.
+- The local key has an empty password so it can be used non-interactively.
+  Tradeoff: anyone who obtains the `.secrets/tauri-updater.key` file can sign
+  updates as CrowFlix, so protect the workstation copy accordingly. To use a
+  password instead, regenerate with `-p` or `signer generate` interactively
+  and store the password in the password secret below.
+- The public key (`.secrets/tauri-updater.key.pub`) is not secret; its
+  contents are committed in `src-tauri/tauri.conf.json` as
+  `plugins.updater.pubkey`. The private key and the configured public key must
+  stay in sync, or update checks at runtime will reject new releases.
+
+### Required GitHub secrets
+
+Before tagging a release, add these repository secrets under
+Settings → Secrets and variables → Actions:
+
+- `TAURI_SIGNING_PRIVATE_KEY` — the full text contents of
+  `.secrets/tauri-updater.key`.
+- `TAURI_SIGNING_PRIVATE_KEY_PASSWORD` — the key password, or an empty string
+  for the current passwordless key.
+
+The release workflow passes both to `npm run release:build`. Without
+`TAURI_SIGNING_PRIVATE_KEY` the Tauri bundler refuses to finish a build that
+has updater artifacts enabled, so the workflow fails instead of publishing
+unsigned update artifacts. The same applies to a local
+`npm run release:build`: set `TAURI_SIGNING_PRIVATE_KEY` to the key contents
+or to the path of `.secrets/tauri-updater.key` in that shell first.
+
+### How latest.json is produced and uploaded
+
+`tauri.conf.json` sets `bundle.createUpdaterArtifacts: true`, so the release
+build signs the NSIS installer with the updater key and writes
+`<installer>.exe.sig` next to it in the NSIS bundle directory. The release
+workflow's "Generate updater manifest" step then writes `latest.json`
+(version, publication date, and the `windows-x86_64` platform entry with the
+installer download URL and signature) into the same directory. The "Collect
+release assets" step fails the release if either file is missing, copies both
+into `release-assets/`, and the publish step uploads them with the installer,
+its `.sha256` sidecar, and the legal files. The updater endpoint path
+`releases/latest/download/latest.json` always resolves to the manifest of the
+most recent published release, so no per-version endpoint change is needed.
+
+Only releases built with this wiring can auto-update. Older versions without
+the updater plugin keep requiring a manual installer download.
+
+### If the private key is lost or compromised
+
+Rotate it:
+
+1. Generate a new keypair with the signer command above.
+2. Replace `plugins.updater.pubkey` in `src-tauri/tauri.conf.json` with the
+   new public key.
+3. Replace the `TAURI_SIGNING_PRIVATE_KEY` (and, if used,
+   `TAURI_SIGNING_PRIVATE_KEY_PASSWORD`) GitHub secrets.
+4. Publish a new release signed with the new key.
+
+Installs built with the old public key then fail the update signature check
+cleanly and stay on their current version; their users reinstall from the
+latest published installer. If the key was compromised, also remove the
+affected release assets so no update signed with the leaked key remains
+downloadable.

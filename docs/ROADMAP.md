@@ -25,8 +25,12 @@ for the desktop app — the same product, worldwide.
       tests), 12 h Cache-API offline fallback, playback/browse/search/
       favourites/zap/Web Library live. Deployed to Cloudflare Pages project
       `crow-flix-web` — https://crow-flix-web.pages.dev
-- [ ] CrowFlix relay (Cloudflare Worker): proxy EPG guides and header-locked
-      streams with provider rules intact; personal M3U/XMLTV import on web
+- [x] CrowFlix relay (Cloudflare Worker, `crowflix-relay.djdarren2056.workers.dev`):
+      live EPG on web (verified with 89 real AU channels), header-locked
+      stream playback, bounded user-source fetch. Deployed and wired into the
+      web build
+- [ ] Web personal-source import UI wired to relay `/fetch` (needs a TS M3U
+      parser — currently desktop-only)
 - [ ] Custom domain when Crow picks one
 - Acceptance: Crow opens the URL on his phone and watches a channel
 
@@ -60,9 +64,12 @@ The brand is deeper than the current UI. Close that gap.
 Features that never reach the installed app do not exist. `tauri-plugin-updater`
 against GitHub Releases (`latest.json` on the release tag).
 
-- Signing keypair kept outside the repository; private key as a GitHub Actions
-  secret; public key in `tauri.conf.json`
-- In-app update prompt: version, notes, one click, restart
+- [x] Plumbing landed 2026-08-16: plugin + minisign keypair (private key in
+      git-ignored `.secrets/`), signed artifacts + `latest.json` generation in
+      the release workflow, custody rules in RELEASING.md
+- [ ] Crow adds `TAURI_SIGNING_PRIVATE_KEY` + `TAURI_SIGNING_PRIVATE_KEY_PASSWORD`
+      (empty) as GitHub Actions secrets — release builds fail without them now
+- [ ] In-app update prompt: version, notes, one click, restart
 - Acceptance: build vNext, install vPrev, watch it update itself; unsigned
   Authenticode status stays honestly disclosed
 
