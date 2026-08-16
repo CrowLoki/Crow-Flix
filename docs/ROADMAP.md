@@ -15,6 +15,21 @@ Principles that do not change:
 - **One verified stage at a time.** No stage is "done" on a green build alone;
   it is done when its acceptance check passes on the real app.
 
+## Stage W — CrowFlix Web (worldwide, like Netflix)
+
+CrowFlix as a website anyone can open, on Crow's Cloudflare. Not a replacement
+for the desktop app — the same product, worldwide.
+
+- [x] v1 landed 2026-08-16: real IPTV-org catalogue in the browser via a
+      faithful TS port of the Rust merge pipeline (`src/webCatalog.ts` +
+      tests), 12 h Cache-API offline fallback, playback/browse/search/
+      favourites/zap/Web Library live. Deployed to Cloudflare Pages project
+      `crow-flix-web` — https://crow-flix-web.pages.dev
+- [ ] CrowFlix relay (Cloudflare Worker): proxy EPG guides and header-locked
+      streams with provider rules intact; personal M3U/XMLTV import on web
+- [ ] Custom domain when Crow picks one
+- Acceptance: Crow opens the URL on his phone and watches a channel
+
 ## Stage 1 — Zap: real-TV channel behaviour
 
 Channel surfing like hardware: channel up/down, previous channel, direct
