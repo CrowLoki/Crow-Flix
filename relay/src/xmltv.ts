@@ -128,6 +128,29 @@ export function decodeXmlEntities(text: string): string {
   });
 }
 
+/**
+ * Remove XML markup in one pass without allowing adjacent or nested tag
+ * fragments to become a new element after replacement. XML text containing a
+ * literal angle bracket must encode it as an entity, so markup depth can be
+ * tracked safely after entity decoding.
+ */
+export function stripXmlMarkup(text: string): string {
+  let markupDepth = 0;
+  let plainText = "";
+
+  for (const character of text) {
+    if (character === "<") {
+      markupDepth += 1;
+    } else if (character === ">" && markupDepth > 0) {
+      markupDepth -= 1;
+    } else if (markupDepth === 0) {
+      plainText += character;
+    }
+  }
+
+  return plainText;
+}
+
 function attrValue(tag: string, name: string): string | null {
   const pattern = new RegExp(`${name}\\s*=\\s*(?:"([^"]*)"|'([^']*)')`, "i");
   const match = pattern.exec(tag);
@@ -143,8 +166,7 @@ function elementText(
   const pattern = new RegExp(`<${tag}(?:\\s[^>]*)?>([\\s\\S]*?)</${tag}>`, "i");
   const match = pattern.exec(body);
   if (!match) return undefined;
-  const inner = match[1].replace(/<[^>]*>/g, "");
-  const text = decodeXmlEntities(inner).trim();
+  const text = stripXmlMarkup(decodeXmlEntities(match[1])).trim();
   if (text.length === 0 || utf8Length(text) > maxBytes) return undefined;
   return text;
 }
