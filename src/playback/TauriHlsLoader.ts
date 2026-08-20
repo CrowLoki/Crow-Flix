@@ -6,6 +6,7 @@ import type {
   LoaderContext,
   LoaderResponse,
   LoaderStats,
+  NullableNetworkDetails,
   RetryConfig,
 } from "hls.js";
 import {
@@ -251,7 +252,7 @@ export function createTauriHlsLoader(
     private handleError(
       serial: number,
       response: LoaderResponse,
-      networkDetails: unknown,
+      networkDetails: NullableNetworkDetails,
       error: { code: number; text: string },
     ): void {
       if (!this.isCurrent(serial) || !this.context) return;

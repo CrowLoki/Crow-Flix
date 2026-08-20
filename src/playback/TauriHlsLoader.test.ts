@@ -21,6 +21,7 @@ const source: StreamSource = {
 const context: LoaderContext = {
   url: source.url,
   responseType: "text",
+  type: "manifest" as LoaderContext["type"],
 };
 
 const config: LoaderConfiguration = {

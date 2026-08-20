@@ -9,7 +9,7 @@ provided or was explicitly associated with that text. Every checked-in override
 body and every reused package text is validated by SHA-256 before generation.
 
 ================================================================================
-Components: Cargo:adler2@2.0.1, Cargo:anyhow@1.0.103, Cargo:atomic-waker@1.1.2, Cargo:camino@1.2.4, Cargo:cargo-platform@0.1.9, Cargo:cargo_metadata@0.19.2, Cargo:displaydoc@0.2.6, Cargo:dtoa@1.0.11, Cargo:dyn-clone@1.0.20, Cargo:erased-serde@0.4.10, Cargo:fastrand@2.4.1, Cargo:itoa@1.0.18, Cargo:once_cell@1.21.4, Cargo:pin-project-lite@0.2.17, Cargo:proc-macro2@1.0.106, Cargo:quote@1.0.46, Cargo:ref-cast-impl@1.0.25, Cargo:ref-cast@1.0.25, Cargo:rustc-hash@2.1.3, Cargo:semver@1.0.28, Cargo:serde-untagged@0.1.9, Cargo:serde@1.0.228, Cargo:serde_core@1.0.228, Cargo:serde_derive@1.0.228, Cargo:serde_derive_internals@0.29.1, Cargo:serde_json@1.0.150, Cargo:serde_repr@0.1.20, Cargo:servo_arc@0.4.3, Cargo:syn@2.0.118, Cargo:thiserror-impl@1.0.69, Cargo:thiserror-impl@2.0.18, Cargo:thiserror@1.0.69, Cargo:thiserror@2.0.18, Cargo:typeid@1.0.3, Cargo:unic-char-property@0.9.0, Cargo:unic-char-range@0.9.0, Cargo:unic-common@0.9.0, Cargo:unic-ucd-ident@0.9.0, Cargo:unic-ucd-version@0.9.0, Cargo:unicode-ident@1.0.24, Cargo:zmij@1.0.23
+Components: Cargo:adler2@2.0.1, Cargo:anyhow@1.0.103, Cargo:atomic-waker@1.1.2, Cargo:camino@1.2.4, Cargo:cargo-platform@0.1.9, Cargo:cargo_metadata@0.19.2, Cargo:displaydoc@0.2.6, Cargo:dtoa@1.0.11, Cargo:dyn-clone@1.0.20, Cargo:erased-serde@0.4.10, Cargo:fastrand@2.4.1, Cargo:itoa@1.0.18, Cargo:once_cell@1.21.4, Cargo:pin-project-lite@0.2.17, Cargo:proc-macro2@1.0.106, Cargo:quote@1.0.46, Cargo:ref-cast-impl@1.0.25, Cargo:ref-cast@1.0.25, Cargo:rustc-hash@2.1.3, Cargo:semver@1.0.28, Cargo:serde-untagged@0.1.9, Cargo:serde@1.0.229, Cargo:serde_core@1.0.229, Cargo:serde_derive@1.0.229, Cargo:serde_derive_internals@0.29.1, Cargo:serde_json@1.0.151, Cargo:serde_repr@0.1.20, Cargo:servo_arc@0.4.3, Cargo:syn@2.0.118, Cargo:syn@3.0.3, Cargo:thiserror-impl@1.0.69, Cargo:thiserror-impl@2.0.18, Cargo:thiserror@1.0.69, Cargo:thiserror@2.0.18, Cargo:typeid@1.0.3, Cargo:unic-char-property@0.9.0, Cargo:unic-char-range@0.9.0, Cargo:unic-common@0.9.0, Cargo:unic-ucd-ident@0.9.0, Cargo:unic-ucd-version@0.9.0, Cargo:unicode-ident@1.0.24, Cargo:zmij@1.0.23
 Source files: LICENSE-MIT, verified-shared-text:rust-unic-mit/LICENSE-MIT
 Verified override sources: https://github.com/open-i18n/rust-unic/blob/5878605364af97a3358368a6eaef02104af2e016/LICENSE-MIT
 Text SHA-256: 23f18e03dc49df91622fe2a76176497404e46ced8a715d9d2b67a7446571cca3
@@ -325,7 +325,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 
 ================================================================================
-Components: Cargo:anyhow@1.0.103, Cargo:dtoa@1.0.11, Cargo:dyn-clone@1.0.20, Cargo:erased-serde@0.4.10, Cargo:itoa@1.0.18, Cargo:libc@0.2.186, Cargo:litrs@1.0.0, Cargo:proc-macro2@1.0.106, Cargo:quote@1.0.46, Cargo:ref-cast-impl@1.0.25, Cargo:ref-cast@1.0.25, Cargo:rustc-hash@2.1.3, Cargo:ryu@1.0.23, Cargo:semver@1.0.28, Cargo:serde-untagged@0.1.9, Cargo:serde@1.0.228, Cargo:serde_core@1.0.228, Cargo:serde_derive@1.0.228, Cargo:serde_derive_internals@0.29.1, Cargo:serde_json@1.0.150, Cargo:serde_repr@0.1.20, Cargo:serde_urlencoded@0.7.1, Cargo:syn@2.0.118, Cargo:thiserror-impl@1.0.69, Cargo:thiserror-impl@2.0.18, Cargo:thiserror@1.0.69, Cargo:thiserror@2.0.18, Cargo:typeid@1.0.3, Cargo:unicode-ident@1.0.24
+Components: Cargo:anyhow@1.0.103, Cargo:dtoa@1.0.11, Cargo:dyn-clone@1.0.20, Cargo:erased-serde@0.4.10, Cargo:itoa@1.0.18, Cargo:libc@0.2.186, Cargo:litrs@1.0.0, Cargo:proc-macro2@1.0.106, Cargo:quote@1.0.46, Cargo:ref-cast-impl@1.0.25, Cargo:ref-cast@1.0.25, Cargo:rustc-hash@2.1.3, Cargo:ryu@1.0.23, Cargo:semver@1.0.28, Cargo:serde-untagged@0.1.9, Cargo:serde@1.0.229, Cargo:serde_core@1.0.229, Cargo:serde_derive@1.0.229, Cargo:serde_derive_internals@0.29.1, Cargo:serde_json@1.0.151, Cargo:serde_repr@0.1.20, Cargo:serde_urlencoded@0.7.1, Cargo:syn@2.0.118, Cargo:syn@3.0.3, Cargo:thiserror-impl@1.0.69, Cargo:thiserror-impl@2.0.18, Cargo:thiserror@1.0.69, Cargo:thiserror@2.0.18, Cargo:typeid@1.0.3, Cargo:unicode-ident@1.0.24
 Source files: LICENSE-APACHE
 Text SHA-256: 62c7a1e35f56406896d7aa7ca52d0cc0d272ac022b5d2796e7d6905db8a3636a
 --------------------------------------------------------------------------------
@@ -12075,7 +12075,7 @@ DEALINGS IN THE SOFTWARE.
 
 
 ================================================================================
-Components: Cargo:tokio-util@0.7.18, Cargo:tokio@1.52.3
+Components: Cargo:tokio-util@0.7.18, Cargo:tokio@1.53.1
 Source files: LICENSE
 Text SHA-256: 253cd04c6714889df2d32f3f64d669179a1c95c76ac43c40882c52eb06bc3552
 --------------------------------------------------------------------------------
@@ -13003,7 +13003,7 @@ Creator: Person: Daniel Thompson-Yvetot
 
 
 ================================================================================
-Components: Cargo:windows-collections@0.2.0, Cargo:windows-core@0.61.2, Cargo:windows-future@0.2.1, Cargo:windows-implement@0.60.2, Cargo:windows-interface@0.59.3, Cargo:windows-link@0.1.3, Cargo:windows-link@0.2.1, Cargo:windows-numerics@0.2.0, Cargo:windows-registry@0.6.1, Cargo:windows-result@0.3.4, Cargo:windows-result@0.4.1, Cargo:windows-strings@0.4.2, Cargo:windows-strings@0.5.1, Cargo:windows-sys@0.59.0, Cargo:windows-sys@0.60.2, Cargo:windows-sys@0.61.2, Cargo:windows-targets@0.52.6, Cargo:windows-targets@0.53.5, Cargo:windows-threading@0.1.0, Cargo:windows-version@0.1.7, Cargo:windows@0.61.3, Cargo:windows_x86_64_msvc@0.52.6, Cargo:windows_x86_64_msvc@0.53.1
+Components: Cargo:windows-collections@0.2.0, Cargo:windows-core@0.61.2, Cargo:windows-future@0.2.1, Cargo:windows-implement@0.60.2, Cargo:windows-interface@0.59.3, Cargo:windows-link@0.1.3, Cargo:windows-link@0.2.1, Cargo:windows-numerics@0.2.0, Cargo:windows-registry@0.6.1, Cargo:windows-result@0.3.4, Cargo:windows-result@0.4.1, Cargo:windows-strings@0.4.2, Cargo:windows-strings@0.5.1, Cargo:windows-sys@0.52.0, Cargo:windows-sys@0.59.0, Cargo:windows-sys@0.60.2, Cargo:windows-sys@0.61.2, Cargo:windows-targets@0.52.6, Cargo:windows-targets@0.53.5, Cargo:windows-threading@0.1.0, Cargo:windows-version@0.1.7, Cargo:windows@0.61.3, Cargo:windows_x86_64_msvc@0.52.6, Cargo:windows_x86_64_msvc@0.53.1
 Source files: license-apache-2.0
 Text SHA-256: c16f8dcf1a368b83be78d826ea23de4079fe1b4469a0ab9ee20563f37ff3d44b
 --------------------------------------------------------------------------------
@@ -13211,7 +13211,7 @@ Text SHA-256: c16f8dcf1a368b83be78d826ea23de4079fe1b4469a0ab9ee20563f37ff3d44b
 
 
 ================================================================================
-Components: Cargo:windows-collections@0.2.0, Cargo:windows-core@0.61.2, Cargo:windows-future@0.2.1, Cargo:windows-implement@0.60.2, Cargo:windows-interface@0.59.3, Cargo:windows-link@0.1.3, Cargo:windows-link@0.2.1, Cargo:windows-numerics@0.2.0, Cargo:windows-registry@0.6.1, Cargo:windows-result@0.3.4, Cargo:windows-result@0.4.1, Cargo:windows-strings@0.4.2, Cargo:windows-strings@0.5.1, Cargo:windows-sys@0.59.0, Cargo:windows-sys@0.60.2, Cargo:windows-sys@0.61.2, Cargo:windows-targets@0.52.6, Cargo:windows-targets@0.53.5, Cargo:windows-threading@0.1.0, Cargo:windows-version@0.1.7, Cargo:windows@0.61.3, Cargo:windows_x86_64_msvc@0.52.6, Cargo:windows_x86_64_msvc@0.53.1
+Components: Cargo:windows-collections@0.2.0, Cargo:windows-core@0.61.2, Cargo:windows-future@0.2.1, Cargo:windows-implement@0.60.2, Cargo:windows-interface@0.59.3, Cargo:windows-link@0.1.3, Cargo:windows-link@0.2.1, Cargo:windows-numerics@0.2.0, Cargo:windows-registry@0.6.1, Cargo:windows-result@0.3.4, Cargo:windows-result@0.4.1, Cargo:windows-strings@0.4.2, Cargo:windows-strings@0.5.1, Cargo:windows-sys@0.52.0, Cargo:windows-sys@0.59.0, Cargo:windows-sys@0.60.2, Cargo:windows-sys@0.61.2, Cargo:windows-targets@0.52.6, Cargo:windows-targets@0.53.5, Cargo:windows-threading@0.1.0, Cargo:windows-version@0.1.7, Cargo:windows@0.61.3, Cargo:windows_x86_64_msvc@0.52.6, Cargo:windows_x86_64_msvc@0.53.1
 Source files: license-mit
 Text SHA-256: c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383
 --------------------------------------------------------------------------------
@@ -13408,7 +13408,7 @@ licences; see files named LICENSE.*.txt for details.
 
 
 ================================================================================
-Components: npm:@fontsource/inter@5.2.8
+Components: npm:@fontsource/inter@5.3.0
 Source files: LICENSE
 Text SHA-256: 3b0a5fca3d17942cde889069889dedbbbd075e9b599968c82a95f4d944e9b345
 --------------------------------------------------------------------------------
@@ -14011,7 +14011,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
 ================================================================================
-Components: npm:dashjs@5.2.0
+Components: npm:dashjs@5.2.1
 Source files: LICENSE.md
 Text SHA-256: f626de0042148a04704895f36bf57c7351fbaddd4dea5f3d32f24a8a6b23e44f
 --------------------------------------------------------------------------------
@@ -14059,7 +14059,7 @@ SOFTWARE.
 
 
 ================================================================================
-Components: npm:hls.js@1.6.16
+Components: npm:hls.js@1.7.1
 Source files: LICENSE
 Text SHA-256: ca8773cf798c7ed997d4dd7c8e23c348699f8d5b7462636694cc14de6cda12db
 --------------------------------------------------------------------------------
@@ -14426,7 +14426,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
 ================================================================================
-Components: npm:react-dom@19.2.7, npm:react@19.2.7, npm:scheduler@0.27.0
+Components: npm:react-dom@19.2.8, npm:react@19.2.8, npm:scheduler@0.27.0
 Source files: LICENSE
 Text SHA-256: da6d3703ed11cbe42bd212c725957c98da23cbff1998c05fa4b3d976d1a58e93
 --------------------------------------------------------------------------------

@@ -14,7 +14,7 @@ CrowFlix does not bundle or relicense channel, programme-guide, stream, logo, ar
 
 ## Dependency inventory
 
-Inventory: 354 components (29 npm, 325 Cargo).
+Inventory: 356 components (29 npm, 327 Cargo).
 
 | Ecosystem | Package | Version | Declared license | License text | Upstream |
 | --- | --- | --- | --- | --- | --- |
@@ -204,11 +204,11 @@ Inventory: 354 components (29 npm, 325 Cargo).
 | Cargo | scopeguard | 1.2.0 | MIT OR Apache-2.0 | Included | [source](https://github.com/bluss/scopeguard) |
 | Cargo | selectors | 0.36.1 | MPL-2.0 | Included (verified override) | [source](https://github.com/servo/stylo/tree/635e1a19d02960588a00e189bd4bd5bdb150ec3d/selectors) |
 | Cargo | semver | 1.0.28 | MIT OR Apache-2.0 | Included | [source](https://github.com/dtolnay/semver) |
-| Cargo | serde | 1.0.228 | MIT OR Apache-2.0 | Included | [source](https://github.com/serde-rs/serde) |
-| Cargo | serde_core | 1.0.228 | MIT OR Apache-2.0 | Included | [source](https://github.com/serde-rs/serde) |
-| Cargo | serde_derive | 1.0.228 | MIT OR Apache-2.0 | Included | [source](https://github.com/serde-rs/serde) |
+| Cargo | serde | 1.0.229 | MIT OR Apache-2.0 | Included | [source](https://github.com/serde-rs/serde) |
+| Cargo | serde_core | 1.0.229 | MIT OR Apache-2.0 | Included | [source](https://github.com/serde-rs/serde) |
+| Cargo | serde_derive | 1.0.229 | MIT OR Apache-2.0 | Included | [source](https://github.com/serde-rs/serde) |
 | Cargo | serde_derive_internals | 0.29.1 | MIT OR Apache-2.0 | Included | [source](https://github.com/serde-rs/serde) |
-| Cargo | serde_json | 1.0.150 | MIT OR Apache-2.0 | Included | [source](https://github.com/serde-rs/json) |
+| Cargo | serde_json | 1.0.151 | MIT OR Apache-2.0 | Included | [source](https://github.com/serde-rs/json) |
 | Cargo | serde_repr | 0.1.20 | MIT OR Apache-2.0 | Included | [source](https://github.com/dtolnay/serde-repr) |
 | Cargo | serde_spanned | 1.1.1 | MIT OR Apache-2.0 | Included | [source](https://github.com/toml-rs/toml) |
 | Cargo | serde_urlencoded | 0.7.1 | MIT/Apache-2.0 | Included | [source](https://github.com/nox/serde_urlencoded) |
@@ -232,6 +232,7 @@ Inventory: 354 components (29 npm, 325 Cargo).
 | Cargo | strsim | 0.11.1 | MIT | Included | [source](https://github.com/rapidfuzz/strsim-rs) |
 | Cargo | subtle | 2.6.1 | BSD-3-Clause | Included | [source](https://github.com/dalek-cryptography/subtle) |
 | Cargo | syn | 2.0.118 | MIT OR Apache-2.0 | Included | [source](https://github.com/dtolnay/syn) |
+| Cargo | syn | 3.0.3 | MIT OR Apache-2.0 | Included | [source](https://github.com/dtolnay/syn) |
 | Cargo | sync_wrapper | 1.0.2 | Apache-2.0 | Included | [source](https://github.com/Actyx/sync_wrapper) |
 | Cargo | synstructure | 0.13.2 | MIT | Included | [source](https://github.com/mystor/synstructure) |
 | Cargo | tao | 0.35.3 | Apache-2.0 | Included | [source](https://github.com/tauri-apps/tao) |
@@ -260,7 +261,7 @@ Inventory: 354 components (29 npm, 325 Cargo).
 | Cargo | tinystr | 0.8.3 | Unicode-3.0 | Included | [source](https://github.com/unicode-org/icu4x) |
 | Cargo | tinyvec | 1.12.0 | Zlib OR Apache-2.0 OR MIT | Included | [source](https://github.com/Lokathor/tinyvec) |
 | Cargo | tinyvec_macros | 0.1.1 | MIT OR Apache-2.0 OR Zlib | Included | [source](https://github.com/Soveu/tinyvec_macros) |
-| Cargo | tokio | 1.52.3 | MIT | Included | [source](https://github.com/tokio-rs/tokio) |
+| Cargo | tokio | 1.53.1 | MIT | Included | [source](https://github.com/tokio-rs/tokio) |
 | Cargo | tokio-macros | 2.7.0 | MIT | Included | [source](https://github.com/tokio-rs/tokio) |
 | Cargo | tokio-rustls | 0.26.4 | MIT OR Apache-2.0 | Included | [source](https://github.com/rustls/tokio-rustls) |
 | Cargo | tokio-util | 0.7.18 | MIT | Included | [source](https://github.com/tokio-rs/tokio) |
@@ -321,6 +322,7 @@ Inventory: 354 components (29 npm, 325 Cargo).
 | Cargo | windows-result | 0.4.1 | MIT OR Apache-2.0 | Included | [source](https://github.com/microsoft/windows-rs) |
 | Cargo | windows-strings | 0.4.2 | MIT OR Apache-2.0 | Included | [source](https://github.com/microsoft/windows-rs) |
 | Cargo | windows-strings | 0.5.1 | MIT OR Apache-2.0 | Included | [source](https://github.com/microsoft/windows-rs) |
+| Cargo | windows-sys | 0.52.0 | MIT OR Apache-2.0 | Included | [source](https://github.com/microsoft/windows-rs) |
 | Cargo | windows-sys | 0.59.0 | MIT OR Apache-2.0 | Included | [source](https://github.com/microsoft/windows-rs) |
 | Cargo | windows-sys | 0.60.2 | MIT OR Apache-2.0 | Included | [source](https://github.com/microsoft/windows-rs) |
 | Cargo | windows-sys | 0.61.2 | MIT OR Apache-2.0 | Included | [source](https://github.com/microsoft/windows-rs) |
@@ -343,7 +345,7 @@ Inventory: 354 components (29 npm, 325 Cargo).
 | Cargo | zerovec-derive | 0.11.3 | Unicode-3.0 | Included | [source](https://github.com/unicode-org/icu4x) |
 | Cargo | zip | 4.6.1 | MIT | Included | [source](https://github.com/zip-rs/zip2.git) |
 | Cargo | zmij | 1.0.23 | MIT | Included | [source](https://github.com/dtolnay/zmij) |
-| npm | @fontsource/inter | 5.2.8 | OFL-1.1 | Included | [source](https://github.com/fontsource/font-files.git) |
+| npm | @fontsource/inter | 5.3.0 | OFL-1.1 | Included | [source](https://github.com/fontsource/font-files.git) |
 | npm | @phosphor-icons/react | 2.1.10 | MIT | Included | phosphor-icons/react |
 | npm | @svta/cml-608 | 1.0.2 | Apache-2.0 | Included | [source](https://github.com/streaming-video-technology-alliance/common-media-library.git) |
 | npm | @svta/cml-cmcd | 2.3.2 | Apache-2.0 | Included | [source](https://github.com/streaming-video-technology-alliance/common-media-library.git) |
@@ -359,17 +361,17 @@ Inventory: 354 components (29 npm, 325 Cargo).
 | npm | @tauri-apps/plugin-http | 2.5.9 | MIT OR Apache-2.0 | Included | [source](https://github.com/tauri-apps/plugins-workspace) |
 | npm | bcp-47-match | 2.0.3 | MIT | Included | wooorm/bcp-47-match |
 | npm | codem-isoboxer | 0.3.10 | MIT | Included | [source](https://github.com/madebyhiro/codem-isoboxer) |
-| npm | dashjs | 5.2.0 | BSD-3-Clause | Included | [source](https://github.com/Dash-Industry-Forum/dash.js.git) |
+| npm | dashjs | 5.2.1 | BSD-3-Clause | Included | [source](https://github.com/Dash-Industry-Forum/dash.js.git) |
 | npm | fast-deep-equal | 3.1.3 | MIT | Included | [source](https://github.com/epoberezkin/fast-deep-equal.git) |
-| npm | hls.js | 1.6.16 | Apache-2.0 | Included | [source](https://github.com/video-dev/hls.js) |
+| npm | hls.js | 1.7.1 | Apache-2.0 | Included | [source](https://github.com/video-dev/hls.js) |
 | npm | html-entities | 2.6.0 | MIT | Included | [source](https://github.com/mdevils/html-entities.git) |
 | npm | immediate | 3.0.6 | MIT | Included | [source](https://github.com/calvinmetcalf/immediate.git) |
 | npm | imsc | 1.1.5 | BSD-2-Clause | Included | [source](https://github.com/sandflow/imscJS) |
 | npm | lie | 3.1.1 | MIT | Included | [source](https://github.com/calvinmetcalf/lie.git) |
 | npm | localforage | 1.10.0 | Apache-2.0 | Included | [source](https://github.com/localForage/localForage.git) |
 | npm | path-browserify | 1.0.1 | MIT | Included | [source](https://github.com/browserify/path-browserify.git) |
-| npm | react | 19.2.7 | MIT | Included | [source](https://github.com/facebook/react.git) |
-| npm | react-dom | 19.2.7 | MIT | Included | [source](https://github.com/facebook/react.git) |
+| npm | react | 19.2.8 | MIT | Included | [source](https://github.com/react/react.git) |
+| npm | react-dom | 19.2.8 | MIT | Included | [source](https://github.com/react/react.git) |
 | npm | sax | 1.2.1 | ISC | Included | [source](https://github.com/isaacs/sax-js.git) |
 | npm | scheduler | 0.27.0 | MIT | Included | [source](https://github.com/facebook/react.git) |
 
