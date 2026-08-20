@@ -5,6 +5,7 @@ import {
   channelAliases,
   decodeXmlEntities,
   parseXmltvTime,
+  stripXmlMarkup,
   XmltvStreamParser,
 } from "../src/xmltv";
 
@@ -77,6 +78,20 @@ describe("decodeXmlEntities", () => {
 
   it("leaves unknown entities untouched", () => {
     expect(decodeXmlEntities("&bogus;")).toBe("&bogus;");
+  });
+});
+
+describe("stripXmlMarkup", () => {
+  it("removes ordinary, nested, and entity-encoded markup without creating tags", () => {
+    const input = decodeXmlEntities(
+      "Safe <b>bold</b> <scr<script>ipt>nested</scr<script>ipt> " +
+        "&lt;script&gt;encoded&lt;/script&gt;",
+    );
+
+    const result = stripXmlMarkup(input);
+
+    expect(result).toBe("Safe bold nested encoded");
+    expect(result.toLowerCase()).not.toContain("<script");
   });
 });
 
