@@ -104,7 +104,7 @@ Inventory: 356 components (29 npm, 327 Cargo).
 | Cargo | getrandom | 0.3.4 | MIT OR Apache-2.0 | Included | [source](https://github.com/rust-random/getrandom) |
 | Cargo | getrandom | 0.4.3 | MIT OR Apache-2.0 | Included | [source](https://github.com/rust-random/getrandom) |
 | Cargo | glob | 0.3.3 | MIT OR Apache-2.0 | Included | [source](https://github.com/rust-lang/glob) |
-| Cargo | h2 | 0.4.15 | MIT | Included | [source](https://github.com/hyperium/h2) |
+| Cargo | h2 | 0.4.17 | MIT | Included | [source](https://github.com/hyperium/h2) |
 | Cargo | hashbrown | 0.12.3 | MIT OR Apache-2.0 | Included | [source](https://github.com/rust-lang/hashbrown) |
 | Cargo | hashbrown | 0.17.1 | MIT OR Apache-2.0 | Included | [source](https://github.com/rust-lang/hashbrown) |
 | Cargo | heck | 0.5.0 | MIT OR Apache-2.0 | Included | [source](https://github.com/withoutboats/heck) |
