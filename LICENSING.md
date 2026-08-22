@@ -12,6 +12,11 @@ Unless a file or directory says otherwise, CrowFlix source code, build scripts,
 tests, configuration, and original project documentation are licensed under the
 GNU Affero General Public License, version 3 only (`AGPL-3.0-only`).
 
+Crow is the creator and copyright holder of the CrowFlix-authored source code
+and original project documentation. Third-party component notices identify
+their respective licences; they do not attribute authorship of CrowFlix to
+those projects or their maintainers.
+
 The complete licence text is in [`LICENSE`](LICENSE). A verbatim second copy at
 [`LICENSES/AGPL-3.0-only.txt`](LICENSES/AGPL-3.0-only.txt) provides the standard
 REUSE licence-file location. The “only” suffix is intentional: the project does

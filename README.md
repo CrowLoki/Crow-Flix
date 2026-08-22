@@ -4,6 +4,17 @@ CrowFlix is a standalone desktop IPTV player, programme guide, and user-managed 
 
 CrowFlix does not host television channels, media, programme data, or third-party websites. It retrieves records published by configured upstream services and can load sources supplied by the person using the app. Provider availability, access rules, and regional restrictions remain outside CrowFlix's control.
 
+## Project identity
+
+CrowFlix is an original, independent project created and owned by Crow. It is
+maintained separately from Crow's other projects; shared Crow-owned branding
+does not make CrowFlix a clone, fork, continuation, or derivative of another
+product.
+
+References to third-party software, data services, and linked directories
+document their technical roles and licence requirements. They do not assign
+ownership or authorship of CrowFlix to those projects or their maintainers.
+
 ## Features
 
 - IPTV-org integration for channel, stream, feed, logo, category, country, language, region, request-header, and lifecycle metadata
